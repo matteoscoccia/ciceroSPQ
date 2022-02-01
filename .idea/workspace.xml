@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="86a34d0b-cda6-43e9-b1ca-14231de98904" name="Changes" comment="modifica package standard">
-      <change beforePath="$PROJECT_DIR$/code/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/code/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/code/.idea/misc.xml" afterDir="false" />
-    </list>
+    <list default="true" id="86a34d0b-cda6-43e9-b1ca-14231de98904" name="Changes" comment="modifica package standard" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -47,6 +44,7 @@
       <workItem from="1643288544470" duration="195000" />
       <workItem from="1643288760225" duration="173000" />
       <workItem from="1643302629568" duration="4000" />
+      <workItem from="1643314560143" duration="28000" />
     </task>
     <task id="LOCAL-00001" summary="modifica package standard">
       <created>1643281556731</created>
