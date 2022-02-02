@@ -1,8 +1,11 @@
 package it.unicam.cs;
 
+import static it.unicam.cs.App.gestoreEsperienze;
+
 public class Cicerone extends Utente{
 
     public void aggiungiEsperienza(){
-        //TODO implementazione del caso d'uso
+        Esperienza esperienzaCreata = gestoreEsperienze.aggiungiEsperienza();
+        esperienzaCreata.associaCicerone(this);
     }
 }

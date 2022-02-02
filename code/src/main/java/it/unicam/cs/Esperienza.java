@@ -1,16 +1,30 @@
 package it.unicam.cs;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 public class Esperienza {
     private final String id;
     private  String titolo;
     private  String descrizione;
-    private final Date data;
+    private Date data;
     private int postiDisponibili;
     private float prezzo;
     private int postiMinimi;
     private int postiMassimi;
-    private final String emaiOrganizzatore;
-    private final ArrayList<Tag> tag;
+    private String emailOrganizzatore;
+    private ArrayList<Tag> tag;
+    private ArrayList<Partecipante> partecipanti;
+    private Toponimo toponimo;
+    private ArrayList<Tappa> tappe;
+    private Cicerone guida;
+
+    public Esperienza(String id, String titolo, String descrizione, Date data) {
+        this.id = id;
+        this.titolo = titolo;
+        this.descrizione = descrizione;
+        this.data = data;
+    }
 
     public String getId(){
         return this.id;
@@ -45,7 +59,7 @@ public class Esperienza {
     }
 
     public String getEmaiOrganizzatore() {
-        return emaiOrganizzatore;
+        return emailOrganizzatore;
     }
 
     public ArrayList<Tag> getTag() {
@@ -71,13 +85,24 @@ public class Esperienza {
     public void setDescrizione (String descrizione){
         this.descrizione=descrizione;
     }
+
     public void setTitolo (String titolo){
         this.titolo=titolo;
     }
+
     public void associaCicerone (Cicerone ciceroneDaAssociare){
-        //TODO
+        this.guida = ciceroneDaAssociare;
     }
     public void associaToponimo (Toponimo toponimoDaAssociare){
         //TODO
     }
+
+    public void setTag(ArrayList<Tag> listaTag) {
+        this.tag = listaTag;
+    }
+
+    public void setToponimo(Toponimo toponimo) {
+        this.toponimo = toponimo;
+    }
+
 }
