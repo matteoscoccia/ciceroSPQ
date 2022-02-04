@@ -16,8 +16,48 @@ public class GestoreEsperienze {
         this.inputScanner = new Scanner(System.in);
     }
 
-    public void prenotaEsperienza(Esperienza esperienza){
-        // todo
+    public void prenotaEsperienza(Esperienza esperienza,Turista turista){
+        int postiDisponibili = esperienza.getPostiDisponibili();
+        int numPartecipanti = 0;
+        ArrayList<Partecipante> partecipanti = new ArrayList<>();
+        do{
+            System.out.println("\n Posti disponibili per questa esperienza : " +postiDisponibili);
+            System.out.println("\n Inserire numero di partecipanti");
+            numPartecipanti = Integer.parseInt(inputScanner.nextLine());
+        }while(numPartecipanti<1 || numPartecipanti>postiDisponibili);
+        while (numPartecipanti>0){
+            System.out.println("\n Inserire nome partecipante \n");
+            String nome = inputScanner.nextLine();
+            System.out.println("\n Inserire cognome partecipante \n");
+            String cognome = inputScanner.nextLine();
+            System.out.println("\n Inserire e-mail partecipante \n");
+            String email = inputScanner.nextLine();
+            partecipanti.add(new Partecipante(nome,cognome,email));
+            numPartecipanti--;
+        }
+        this.creaRiepilogoEsprerienza(esperienza,partecipanti.size());
+        String conferma;
+        do{
+            System.out.println("\n Confermare esperienza? S/N ");
+            conferma = inputScanner.nextLine();
+        }while(conferma.equals("S") || conferma.equals("N"));
+        if(conferma.equals("S")){
+            Pagamento pagamento = new Pagamento((partecipanti.size()*esperienza.getPrezzo()),turista,esperienza);
+            System.out.println("\n PAGAMENTO IN CORSO ...");
+            System.out.println("\n PAGAMENTO EFFETTUATO CON SUCCESO");
+        }else{
+            System.out.println("\n ANNULLAMENTO PRENOTAZIONE IN CORSO ... ");
+            System.out.println("\n PRENOTAZIONE ANNULLATA");
+        }
+    }
+
+    public void creaRiepilogoEsprerienza(Esperienza esperienza, int numPartecipanti){
+        System.out.println("\n------------------------------------------------------------------");
+        System.out.println("\n Titolo : " +esperienza.getTitolo());
+        System.out.println("\n Descrizione : " +esperienza.getDescrizione());
+        System.out.println("\n Prezzo : " +esperienza.getPrezzo());
+        System.out.println("\n Totale euro : " +(numPartecipanti*esperienza.getPrezzo()));
+        System.out.println("\n-------------------------------------------------------------------");
     }
 
     public void creaRiepilogo(Esperienza esperienza, String titolo, String descrizione, int prezzo){
@@ -55,6 +95,7 @@ public class GestoreEsperienze {
         System.out.println("\nInserire posti massimi: ");
         int postiMassimi = Integer.parseInt(inputScanner.nextLine());
         nuovaEsperienza.setPosti(postiMinimi, postiMassimi);
+        nuovaEsperienza.setPostiDisponibili(postiMassimi);
 
         System.out.println("\nPrezzo esperienza: ");
         float prezzoEsperienza = Float.parseFloat(inputScanner.nextLine());
