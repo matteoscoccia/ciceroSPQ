@@ -58,7 +58,7 @@ public class Esperienza {
         return postiMassimi;
     }
 
-    public String getEmaiOrganizzatore() {
+    public String getEmailOrganizzatore() {
         return emailOrganizzatore;
     }
 
