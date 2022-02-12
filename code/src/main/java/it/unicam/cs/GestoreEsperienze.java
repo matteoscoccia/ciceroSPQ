@@ -7,8 +7,6 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.UUID;
 
-import static it.unicam.cs.App.stmt;
-import static it.unicam.cs.App.rs;
 
 
 public class GestoreEsperienze {
@@ -52,6 +50,7 @@ public class GestoreEsperienze {
             System.out.println("\n ANNULLAMENTO PRENOTAZIONE IN CORSO ... ");
             System.out.println("\n PRENOTAZIONE ANNULLATA");
         }
+        //TODO INTERAZIONE CON DB
     }
 
     public void creaRiepilogoEsperienza(Esperienza esperienza, int numPartecipanti){
@@ -113,7 +112,7 @@ public class GestoreEsperienze {
         if(conferma.equals("S")) {
             // TODO correggere: inserire emailGuida
             try {
-                rs = stmt.executeQuery("INSERT INTO Esperienza values('"+titolo+"', '"+descrizione+"', '"+data+"', '"+postiMassimi+"', '"+postiMassimi+"', '"+postiMinimi+"', '"+prezzoEsperienza+"', '"+null+"'");
+                //rs = stmt.executeQuery("INSERT INTO Esperienza values('"+titolo+"', '"+descrizione+"', '"+data+"', '"+postiMassimi+"', '"+postiMassimi+"', '"+postiMinimi+"', '"+prezzoEsperienza+"', '"+null+"'");
             } catch(Exception e){System.out.println(e);}
             return nuovaEsperienza;
         }else {
@@ -125,7 +124,7 @@ public class GestoreEsperienze {
     private Toponimo visualizzaElencoToponimi() {
         //TODO implementare toponimi DB
         try {
-            rs = stmt.executeQuery("SELECT * FROM Toponimo");
+          //  rs = stmt.executeQuery("SELECT * FROM Toponimo");
         } catch(Exception e){System.out.println(e);}
         return null;
     }

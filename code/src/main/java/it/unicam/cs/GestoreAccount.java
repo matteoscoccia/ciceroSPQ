@@ -5,8 +5,6 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static it.unicam.cs.App.rs;
-import static it.unicam.cs.App.stmt;
 
 public class GestoreAccount {
 
@@ -40,7 +38,7 @@ public class GestoreAccount {
     }
 
     private boolean esistenzaCicerone(String emailCicerone) throws SQLException {
-        rs = stmt.executeQuery("SELECT Utente WHERE tipo == 'c' && email == '"+emailCicerone+"'");
+       // rs = stmt.executeQuery("SELECT Utente WHERE tipo == 'c' && email == '"+emailCicerone+"'");
         return false;
     }
 

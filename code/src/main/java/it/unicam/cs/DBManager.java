@@ -1,6 +1,7 @@
 package it.unicam.cs;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DBManager {
 
@@ -8,7 +9,8 @@ public class DBManager {
     private String url;
     private String user;
     private String pwd;
-    private Connection conn = null;
+    private static Connection conn = null;
+
 
     public void setDBManager(String url, String user, String pwd) {
         this.url = url;
@@ -81,6 +83,19 @@ public class DBManager {
         return count;
     }
 
+    public static ArrayList<String> trovaCiceroniAssociati(String emailAssociazione) {
+        ArrayList<String> ciceroni = new ArrayList<>();
+
+        try {
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT email FROM utente WHERE emailAssociazione = '" + emailAssociazione+"'");
+            while(r.next()){ciceroni.add(r.getString("email"));};
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return ciceroni;
+    }
 
 
 }
