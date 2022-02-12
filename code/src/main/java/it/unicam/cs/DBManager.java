@@ -23,9 +23,9 @@ public class DBManager {
         return instance;
     }
 
-    private void connect() {
+    public void connect() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             System.out.println("Where is your MySQL JDBC Driver? " + "Include in your library path!");
             e.printStackTrace();
@@ -39,7 +39,7 @@ public class DBManager {
         }
     }
 
-    private void close() {
+    public void close() {
         try {
             conn.close();
         } catch (SQLException e) {
@@ -56,9 +56,9 @@ public class DBManager {
                 result = false;
             }
             DatabaseMetaData data = conn.getMetaData();
-            System.out.println("Details on DBMS - " + data.getDatabaseProductName() + "\n" + "  version:  "
-                    + data.getDriverMajorVersion() + "\n" + "  catalogs: " + data.getCatalogs().getCursorName() + "\n"
-                    + "  schemas:  " + data.getSchemas().getRow() + "\n");
+           System.out.println("Details on DBMS - " + data.getDatabaseProductName() + "\n" + "  version:  "
+                    + data.getDriverMajorVersion() + "\n" //+ "  catalogs: " + data.getCatalogs().getCursorName() + "\n"
+                   + "  schemas:  " + data.getSchemas().getRow() + "\n");
             close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -67,15 +67,17 @@ public class DBManager {
     }
 
     public int getTableCount(String table) {
-        String SQL = "SELECT count(*) FROM " + table + ";";
-        int count = 0;
-        try (Connection conn = DriverManager.getConnection(url, user, pwd);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(SQL);) {
-            count = rs.getFetchSize();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        int count = -1;
+        try {
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT COUNT(*) AS rowcount FROM " + table);
+            r.next();
+            count = r.getInt("rowcount");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        System.out.println("MyTable has " + count + " row(s).");
+
         return count;
     }
 

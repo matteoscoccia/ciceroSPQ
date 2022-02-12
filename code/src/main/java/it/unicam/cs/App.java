@@ -13,8 +13,11 @@ public class App {
         gestoreEsperienze = new GestoreEsperienze();
         gestoreAccount = new GestoreAccount();
         DBManager dbManager = DBManager.getInstance();
-        dbManager.setDBManager("jdbc:mysql://127.0.0.1:3306/cicero", "admin", "admin");
+        dbManager.setDBManager("jdbc:mysql://localhost:3306/cicero", "admin", "admin");
         dbManager.DBtest();
+        dbManager.connect();
+        System.out.println("\n\n\nCi sono " + dbManager.getTableCount("utente") + " utenti registrati\n\n");
+        dbManager.close();
     }
 
 }
