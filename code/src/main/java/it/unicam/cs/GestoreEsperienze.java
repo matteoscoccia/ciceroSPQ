@@ -1,12 +1,15 @@
 package it.unicam.cs;
 
-import javax.swing.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.UUID;
+
+import static it.unicam.cs.App.stmt;
+import static it.unicam.cs.App.rs;
+
 
 public class GestoreEsperienze {
 
@@ -18,13 +21,13 @@ public class GestoreEsperienze {
 
     public void prenotaEsperienza(Esperienza esperienza,Turista turista){
         int postiDisponibili = esperienza.getPostiDisponibili();
-        int numPartecipanti = 0;
+        int numPartecipanti;
         ArrayList<Partecipante> partecipanti = new ArrayList<>();
         do{
             System.out.println("\n Posti disponibili per questa esperienza : " +postiDisponibili);
             System.out.println("\n Inserire numero di partecipanti");
             numPartecipanti = Integer.parseInt(inputScanner.nextLine());
-        }while(numPartecipanti<1 || numPartecipanti>postiDisponibili);
+        } while(numPartecipanti<1 || numPartecipanti>postiDisponibili);
         while (numPartecipanti>0){
             System.out.println("\n Inserire nome partecipante \n");
             String nome = inputScanner.nextLine();
@@ -35,23 +38,23 @@ public class GestoreEsperienze {
             partecipanti.add(new Partecipante(nome,cognome,email));
             numPartecipanti--;
         }
-        this.creaRiepilogoEsprerienza(esperienza,partecipanti.size());
+        this.creaRiepilogoEsperienza(esperienza,partecipanti.size());
         String conferma;
         do{
             System.out.println("\n Confermare esperienza? S/N ");
             conferma = inputScanner.nextLine();
-        }while(conferma.equals("S") || conferma.equals("N"));
+        } while(conferma.equals("S") || conferma.equals("N"));
         if(conferma.equals("S")){
-            Pagamento pagamento = new Pagamento((partecipanti.size()*esperienza.getPrezzo()),turista,esperienza);
+            Pagamento pagamento = new Pagamento((partecipanti.size() * esperienza.getPrezzo()), turista, esperienza);
             System.out.println("\n PAGAMENTO IN CORSO ...");
             System.out.println("\n PAGAMENTO EFFETTUATO CON SUCCESO");
-        }else{
+        } else{
             System.out.println("\n ANNULLAMENTO PRENOTAZIONE IN CORSO ... ");
             System.out.println("\n PRENOTAZIONE ANNULLATA");
         }
     }
 
-    public void creaRiepilogoEsprerienza(Esperienza esperienza, int numPartecipanti){
+    public void creaRiepilogoEsperienza(Esperienza esperienza, int numPartecipanti){
         System.out.println("\n------------------------------------------------------------------");
         System.out.println("\n Titolo : " +esperienza.getTitolo());
         System.out.println("\n Descrizione : " +esperienza.getDescrizione());
@@ -61,7 +64,7 @@ public class GestoreEsperienze {
     }
 
     public void creaRiepilogo(Esperienza esperienza, String titolo, String descrizione, int prezzo){
-        // todo
+        // TODO (titolo, descrizione e prezzo non servono se si prendono i dati di esperienza dal DB)
     }
 
     public Esperienza aggiungiEsperienza(){
@@ -108,7 +111,10 @@ public class GestoreEsperienze {
         }while(!(conferma.equals("S") || conferma.equals("N")));
 
         if(conferma.equals("S")) {
-            //TODO SCRITTURA SU DATABASE
+            // TODO correggere: inserire emailGuida
+            try {
+                rs = stmt.executeQuery("INSERT INTO Esperienza values('"+titolo+"', '"+descrizione+"', '"+data+"', '"+postiMassimi+"', '"+postiMassimi+"', '"+postiMinimi+"', '"+prezzoEsperienza+"', '"+null+"'");
+            } catch(Exception e){System.out.println(e);}
             return nuovaEsperienza;
         }else {
             System.out.println("Esperienza non creata");
@@ -117,13 +123,16 @@ public class GestoreEsperienze {
     }
 
     private Toponimo visualizzaElencoToponimi() {
-        //TODO IMPLEMENTARE TOPONIMI DATABASE
+        //TODO implementare toponimi DB
+        try {
+            rs = stmt.executeQuery("SELECT * FROM Toponimo");
+        } catch(Exception e){System.out.println(e);}
         return null;
     }
 
 
     public void inserimentoTappe(Esperienza nuovaEsperienza){
-        boolean continuaInserimento = true;
+        boolean continuaInserimento;
         do{
             System.out.println("\nNome tappa: ");
             String nomeTappa = inputScanner.nextLine();
@@ -145,7 +154,7 @@ public class GestoreEsperienze {
 
     private void inserimentoTag(Esperienza nuovaEsperienza) {
         ArrayList<Tag> listaTag = new ArrayList<>();
-        boolean continuaInserimento = true;
+        boolean continuaInserimento;
         do{
             System.out.println("\nNome tag: ");
             String nomeTag = inputScanner.nextLine();
@@ -155,9 +164,9 @@ public class GestoreEsperienze {
             do{
                 System.out.println("\n\nContinuare inserimento? S/N");
                 choice = inputScanner.nextLine();
-            }while(!(choice.equals("S") || choice.equals("N")));
+            } while(!(choice.equals("S") || choice.equals("N")));
             continuaInserimento = !choice.equals("N");
-        }while(continuaInserimento);
+        } while(continuaInserimento);
         nuovaEsperienza.setTag(listaTag);
     }
 
