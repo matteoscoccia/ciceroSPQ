@@ -27,7 +27,7 @@ public class Cicerone extends Utente{
         System.out.println("Email : " +this.getEmail());
     }
 
-    public void modificaDisponibilità(){
+    public void modificaDisponibilita(){
         String conferma;
         Date nuovaData;
         int anno,mese,giorno;
@@ -48,7 +48,7 @@ public class Cicerone extends Utente{
         if(conferma.equals("S")){
             //TODO VEDERE ERRORE CHE IN REALTA NON SEMBRA ERRORE
             nuovaData = new Date(anno,mese,giorno);
-            DBManager.modoficaDisponibilità(this.getEmail(), (java.sql.Date) nuovaData);
+            DBManager.modoficaDisponibilita(this.getEmail(), (java.sql.Date) nuovaData);
             System.out.println("Disponibilità modificata ");
         }else System.out.println("Disponibilità non modificata");
     }

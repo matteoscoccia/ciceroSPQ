@@ -2,6 +2,7 @@ package it.unicam.cs;
 
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class DBManager {
@@ -158,7 +159,8 @@ public class DBManager {
         return new Date(0);
     }
 
-    public static void modoficaDisponibilità ( String emailCicerone, Date nuovaData){
+    public static void modoficaDisponibilita ( String emailCicerone, Date nuovaData){
+        //TODO RIVEDERE: LA DATA VA AGGIUNTA, NON AGGIORNATA
         try {
             Statement s = conn.createStatement();
             ResultSet r = s.executeQuery("UPDATE disponibilita SET data = '"+nuovaData+"' WHERE email = '"+emailCicerone+"'" );
@@ -167,4 +169,70 @@ public class DBManager {
         }
     }
 
+    public static ArrayList<String> selezionaToponimiFigli(String genitore) {
+        ArrayList<String> elencoToponimi = new ArrayList<>();
+        try{
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT nome FROM toponimo WHERE Genitore = '"+genitore+"'");
+            while(r.next()){
+                elencoToponimi.add(r.getString("nome"));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return elencoToponimi;
+    }
+
+    public static void registraEsperienza(Esperienza nuovaEsperienza) {
+        try{
+            Statement s = conn.createStatement();
+            int id = nuovaEsperienza.getId().hashCode();//Non posso convertire direttamente UUID in int
+            String titolo = nuovaEsperienza.getTitolo();
+            String descrizione = nuovaEsperienza.getDescrizione();
+            //Converto la data nel formato giusto per MySQL
+            String pattern = "yyyy-MM-dd";
+            SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+            String mysqlDate = formatter.format(nuovaEsperienza.getData());
+            int postiDisponibili = nuovaEsperienza.getPostiDisponibili();
+            int postiMassimi = nuovaEsperienza.getPostiMassimi();
+            int postiMinimi = nuovaEsperienza.getPostiMinimi();
+            float prezzo = nuovaEsperienza.getPrezzo();
+            String toponimo = nuovaEsperienza.getToponimo().getNome();
+            ResultSet r = s.executeQuery("INSERT INTO esperienza VALUES ("+id+",'"+titolo+"','"+descrizione+"','"+mysqlDate+"',"+postiDisponibili+","+ postiMassimi + "," + postiMinimi + "," + prezzo + ",'"+ ""+ "','" + toponimo + "'"+ ")");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void registraTappe(Esperienza nuovaEsperienza, ArrayList<Tappa> tappeEsperienza) {
+        try{
+            Statement s = conn.createStatement();
+            ResultSet r;
+            for (Tappa t:
+                 tappeEsperienza) {
+                String nomeTappa = t.getNome();
+                String descrizioneTappa = t.getDescrizione();
+                String indirizzoTappa = t.getIndirizzo();
+                int idEsperienza = nuovaEsperienza.getId().hashCode();
+                r = s.executeQuery("INSERT INTO tappa VALUES ('"+nomeTappa+"','"+ descrizioneTappa+ "','" + indirizzoTappa + "'," +idEsperienza + ")");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void registraTag(Esperienza nuovaEsperienza, ArrayList<Tag> tagEsperienza) {
+        try{
+            Statement s = conn.createStatement();
+            ResultSet r;
+            for (Tag t:
+                    tagEsperienza) {
+                String nomeTag = t.getName();
+                int idEsperienza = nuovaEsperienza.getId().hashCode();
+                r = s.executeQuery("INSERT INTO esperienza_tag VALUES ("+idEsperienza+",'"+ nomeTag + "')");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 }

@@ -225,6 +225,7 @@ public class App {
                 case 4:{
                     //TODO COLLEGARE AL METODO AGGIUNGI ESPERIENZA
                     System.out.println("Hai selezionato aggiungi esperienza");
+                    cicerone.aggiungiEsperienza();
                 }break;
                 case 5:{
                     //TODO COLLEGARE AL METODO MODIFICA DISPONIBILITA
