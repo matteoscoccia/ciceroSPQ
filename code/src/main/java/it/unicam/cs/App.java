@@ -1,5 +1,6 @@
 package it.unicam.cs;
 
+import java.net.StandardSocketOptions;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -65,23 +66,176 @@ public class App {
     }
 
     private static void visualizzaMenuAmministrazione() {
-        //TODO IMPLEMENTARE MENU AMMINISTRAZIONE
+        int sceltaMenu = -1;
+        Scanner inputScanner = new Scanner(System.in);
+        do{
+            System.out.println("\n-----------MENU PRINCIPALE AMMINISTRAZIONE-----------");
+            System.out.println("Scegli cosa vuoi fare:");
+            System.out.println("1) Effettua ricerca con filtri");
+            System.out.println("2) Definisci Tag");
+            System.out.println("3) Approva Tag");
+            System.out.println("4) Aggiungi Toponimo");
+            System.out.println("5) Elimina Toponimo");
+            System.out.println("6) Elimina Account");
+            System.out.println("0) Esci");
+            System.out.println(">");
+            sceltaMenu = Integer.parseInt(inputScanner.nextLine());
+
+            switch (sceltaMenu){
+                case 1: {
+                    //TODO COLLEGARE AL METODO RICERCA CON FILTRI
+                    System.out.println("Hai selezionato ricerca con filtri");
+                }break;
+                case 2:{
+                    //TODO COLLEGARE AL METODO DEFINISCI TAG
+                    System.out.println("Hai selezionato definisci Tag");
+                }break;
+                case 3:{
+                    //TODO COLLEGARE AL METODO APPROVA TAG
+                    System.out.println("Hai selezionato approva Tag");
+                }break;
+                case 4:{
+                    //TODO COLLEGARE AL METODO AGGIUNGI TOPONIMO
+                    System.out.println("Hai selezionato aggiungi Toponimo");
+                }break;
+                case 5:{
+                    //TODO COLLEGARE AL METODO ELIMINA TOPONIMO
+                    System.out.println("Hai selezionato elimina Toponimo");
+                }break;
+                case 6:{
+                    //TODO COLLEGARE AL METODO ELIMINA ACCOUNT
+                    System.out.println("Hai selezionato elimina Account");
+                }break;
+            }
+        }while(sceltaMenu!=0);
     }
 
     private static void visualizzaMenuTurista() {
-        //TODO IMPLEMENTARE MENU
+        int sceltaMenu = -1;
+        Scanner inputScanner = new Scanner(System.in);
+        do{
+            System.out.println("\n-----------MENU PRINCIPALE TURISTA-----------");
+            System.out.println("Benvenuto " + turista.getNome() + " " + turista.getCognome());
+            System.out.println("Scegli cosa vuoi fare:");
+            System.out.println("1) Effettua ricerca con filtri");
+            System.out.println("2) Visualizza profilo");
+            System.out.println("3) Contatta assistenza");
+            System.out.println("0) Esci");
+            System.out.println(">");
+            sceltaMenu = Integer.parseInt(inputScanner.nextLine());
+
+            switch (sceltaMenu){
+                case 1: {
+                    //TODO COLLEGARE AL METODO RICERCA CON FILTRI
+                    System.out.println("Hai selezionato ricerca con filtri");
+                }break;
+                case 2:{
+                    //TODO COLLEGARE AL METODO VISUALIZZA PROFILO
+                    System.out.println("Hai selezionato visualizza profilo");
+                }break;
+                case 3:{
+                    //TODO COLLEGARE AL METODO ASSISTENZA
+                    System.out.println("Hai selezionato contatta assistenza");
+                }break;
+            }
+        }while(sceltaMenu!=0);
     }
 
     private static void visualizzaMenuAssociazione() {
-        //TODO IMPLEMENTARE MENU
-        System.out.println("ELENCO CICERONI ASSOCIATI FAI:\n");
-        for (String s: associazione.getEmailCiceroniAssociati()) {
-                System.out.println(s);
-        }
+        int sceltaMenu = -1;
+        Scanner inputScanner = new Scanner(System.in);
+        do{
+            System.out.println("\n-----------MENU PRINCIPALE ASSOCIAZIONE-----------");
+            System.out.println("Benvenuto " + associazione.getNome());
+            System.out.println("Scegli cosa vuoi fare:");
+            System.out.println("1) Effettua ricerca con filtri");
+            System.out.println("2) Visualizza profilo");
+            System.out.println("3) Contatta assistenza");
+            System.out.println("4) Aggiungi esperienza");
+            System.out.println("5) Aggiungi Cicerone alla tua associazione");
+            System.out.println("6) Elimina Cicerone dalla tua associazione");
+            System.out.println("7) Proponi Tag");
+            System.out.println("0) Esci");
+            System.out.println(">");
+            sceltaMenu = Integer.parseInt(inputScanner.nextLine());
+
+            switch (sceltaMenu){
+                case 1: {
+                    //TODO COLLEGARE AL METODO RICERCA CON FILTRI
+                    System.out.println("Hai selezionato ricerca con filtri");
+                }break;
+                case 2:{
+                    //TODO COLLEGARE AL METODO VISUALIZZA PROFILO
+                    System.out.println("Hai selezionato visualizza profilo");
+                }break;
+                case 3:{
+                    //TODO COLLEGARE AL METODO ASSISTENZA
+                    System.out.println("Hai selezionato contatta assistenza");
+                }break;
+                case 4:{
+                    //TODO COLLEGARE AL METODO AGGIUNGI ESPERIENZA
+                    System.out.println("Hai selezionato aggiungi esperienza");
+                }break;
+                case 5:{
+                    //TODO COLLEGARE AL METODO AGGIUNGI CICERONE AD ASSOCIAZIONE
+                    System.out.println("Hai selezionato aggiungi cicerone alla tua associazione");
+                }break;
+                case 6:{
+                    //TODO COLLEGARE AL METODO ELIMINA CICERONE DA ASSOCIAZIONE
+                    System.out.println("Hai selezionato elimina un cicerone dalla tua associazione");
+                }break;
+                case 7:{
+                    //TODO COLLEGARE AL METODO PROPONI TAG
+                    System.out.println("Hai selezionato proponi Tag");
+                }
+            }
+        }while(sceltaMenu!=0);
     }
 
     private static void visualizzaMenuCicerone() {
-        //TODO IMPLEMENTARE MENU
+        int sceltaMenu = -1;
+        Scanner inputScanner = new Scanner(System.in);
+        do{
+            System.out.println("\n-----------MENU PRINCIPALE CICERONE-----------");
+            System.out.println("Benvenuto " + cicerone.getNome() + " " + cicerone.getCognome());
+            System.out.println("Scegli cosa vuoi fare:");
+            System.out.println("1) Effettua ricerca con filtri");
+            System.out.println("2) Visualizza profilo");
+            System.out.println("3) Contatta assistenza");
+            System.out.println("4) Aggiungi esperienza");
+            System.out.println("5) Modifica disponibilità");
+            System.out.println("6) Proponi tag");
+            System.out.println("0) Esci");
+            System.out.println(">");
+            sceltaMenu = Integer.parseInt(inputScanner.nextLine());
+
+            switch (sceltaMenu){
+                case 1: {
+                    //TODO COLLEGARE AL METODO RICERCA CON FILTRI
+                    System.out.println("Hai selezionato ricerca con filtri");
+                }break;
+                case 2:{
+                    //TODO COLLEGARE AL METODO VISUALIZZA PROFILO
+                    System.out.println("Hai selezionato visualizza profilo");
+                }break;
+                case 3:{
+                    //TODO COLLEGARE AL METODO ASSISTENZA
+                    System.out.println("Hai selezionato contatta assistenza");
+                }break;
+                case 4:{
+                    //TODO COLLEGARE AL METODO AGGIUNGI ESPERIENZA
+                    System.out.println("Hai selezionato aggiungi esperienza");
+                }break;
+                case 5:{
+                    //TODO COLLEGARE AL METODO MODIFICA DISPONIBILITA
+                    System.out.println("Hai selezionato modifica disponibilita");
+                }break;
+                case 6:{
+                    //TODO COLLEGARE AL METODO PROPONI TAG
+                    System.out.println("Hai selezionato proponi tag");
+                }break;
+            }
+        }while(sceltaMenu!=0);
     }
 
 }
