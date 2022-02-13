@@ -9,4 +9,10 @@ public class Turista extends Utente{
     public void prenotaEsperienza(Esperienza esperienza){
         gestoreEsperienze.prenotaEsperienza(esperienza,this);
     }
+
+    public void visualizzaProfilo(){
+        System.out.println("Nome : " +this.getNome());
+        System.out.println("Cognome : " +this.getCognome());
+        System.out.println("Email : " +this.getEmail());
+    }
 }

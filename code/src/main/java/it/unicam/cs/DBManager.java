@@ -1,6 +1,7 @@
 package it.unicam.cs;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class DBManager {
@@ -125,5 +126,216 @@ public class DBManager {
         s.executeQuery("DELETE FROM Utente WHERE email ='"+email+"';");
         // invio String motivazione tramite Server email
     }
+    public static void eliminareEsperienza(Esperienza esperienzaDaEliminare){
+        try {
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("DELETE FROM esperienza WHERE titolo='"+esperienzaDaEliminare.getTitolo()+"' AND descrizione = '"+esperienzaDaEliminare.getDescrizione()+"' " );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public static ArrayList<Cicerone> listaCiceroni (){
+        ArrayList<Cicerone> listaCiceroni = new ArrayList<>();
+
+        try {
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT * FROM utente WHERE tipo = 'c' " );
+            while(r.next()){
+                //TODO CONTROLLARE NOMI TABELLE NEL DB
+                listaCiceroni.add(new Cicerone(r.getString("nome"),r.getString("cognome"),r.getString("email"),r.getString("password"),r.getString("emailassociazione")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaCiceroni;
+    }
+
+    public static ArrayList<Cicerone> listaCiceroniAssociati(String emailAssociazione){
+        ArrayList<Cicerone> listaCiceroni = new ArrayList<>();
+        try {
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT * FROM utente WHERE emailAssociazione = '"+emailAssociazione+"' " );
+            while(r.next()){
+                //TODO CONTROLLARE NOMI TABELLE NEL DB
+                listaCiceroni.add(new Cicerone(r.getString("nome"),r.getString("cognome"),r.getString("email"),r.getString("password"),r.getString("emailAssociazione")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaCiceroni;
+    }
+
+    public static void eliminareCiceroneAssociazione (String emailCicerone){
+        try {
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("UPDATE utente SET emailAssociazione = NULL WHERE email = '"+emailCicerone+"'" );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Date visualizzaDisponibilitaCicerone ( String emailCicerone){
+        try {
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT disponibilità WHERE emailCicerone = '"+emailCicerone+"'" );
+            return r.getDate("data");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new Date(0);
+    }
+
+    public static void modoficaDisponibilita ( String emailCicerone, Date nuovaData){
+        //TODO RIVEDERE: LA DATA VA AGGIUNTA, NON AGGIORNATA
+        try {
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("UPDATE disponibilita SET data = '"+nuovaData+"' WHERE email = '"+emailCicerone+"'" );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList<String> selezionaToponimiFigli(String genitore) {
+        ArrayList<String> elencoToponimi = new ArrayList<>();
+        try{
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT nome FROM toponimo WHERE Genitore = '"+genitore+"'");
+            while(r.next()){
+                elencoToponimi.add(r.getString("nome"));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return elencoToponimi;
+    }
+
+    public static void registraEsperienza(Esperienza nuovaEsperienza) {
+        try{
+            Statement s = conn.createStatement();
+            int id = nuovaEsperienza.getId().hashCode();//Non posso convertire direttamente UUID in int
+            String titolo = nuovaEsperienza.getTitolo();
+            String descrizione = nuovaEsperienza.getDescrizione();
+            //Converto la data nel formato giusto per MySQL
+            String pattern = "yyyy-MM-dd";
+            SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+            String mysqlDate = formatter.format(nuovaEsperienza.getData());
+            int postiDisponibili = nuovaEsperienza.getPostiDisponibili();
+            int postiMassimi = nuovaEsperienza.getPostiMassimi();
+            int postiMinimi = nuovaEsperienza.getPostiMinimi();
+            float prezzo = nuovaEsperienza.getPrezzo();
+            String toponimo = nuovaEsperienza.getToponimo().getNome();
+            ResultSet r = s.executeQuery("INSERT INTO esperienza VALUES ("+id+",'"+titolo+"','"+descrizione+"','"+mysqlDate+"',"+postiDisponibili+","+ postiMassimi + "," + postiMinimi + "," + prezzo + ",'"+ ""+ "','" + toponimo + "'"+ ")");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void registraTappe(Esperienza nuovaEsperienza, ArrayList<Tappa> tappeEsperienza) {
+        try{
+            Statement s = conn.createStatement();
+            ResultSet r;
+            for (Tappa t:
+                 tappeEsperienza) {
+                String nomeTappa = t.getNome();
+                String descrizioneTappa = t.getDescrizione();
+                String indirizzoTappa = t.getIndirizzo();
+                int idEsperienza = nuovaEsperienza.getId().hashCode();
+                r = s.executeQuery("INSERT INTO tappa VALUES ('"+nomeTappa+"','"+ descrizioneTappa+ "','" + indirizzoTappa + "'," +idEsperienza + ")");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void registraTag(Esperienza nuovaEsperienza, ArrayList<Tag> tagEsperienza) {
+        try{
+            Statement s = conn.createStatement();
+            ResultSet r;
+            for (Tag t:
+                    tagEsperienza) {
+                String nomeTag = t.getName();
+                int idEsperienza = nuovaEsperienza.getId().hashCode();
+                r = s.executeQuery("INSERT INTO esperienza_tag VALUES ("+idEsperienza+",'"+ nomeTag + "')");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList<Tag> listaTag (){
+        ArrayList<Tag> listaTag = new ArrayList<>();
+        try {
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT * FROM tag" );
+            while(r.next()){
+                listaTag.add(new Tag (r.getString("nome")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaTag;
+    }
+
+    public static ArrayList<Toponimo> listaToponimo(){
+        ArrayList<Toponimo> listaToponimo = new ArrayList<Toponimo>();
+        try {
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT * FROM toponimo");
+            while (r.next()) {
+                listaToponimo.add(new Toponimo(r.getString("nome")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaToponimo;
+    }
+
+    public static ArrayList<java.util.Date> listaDate(){
+        ArrayList<java.util.Date> listaDate = new ArrayList<>();
+        try {
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT DISTINCT data FROM esperienza");
+            while (r.next()) {
+                listaDate.add(new Date(r.getDate("data").getYear(),r.getDate("data").getMonth(),r.getDate("data").getDay())   );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaDate;
+    }
+
+    public static void ricercaConFiltri (Tag tag ,Toponimo toponimo , Date data, String parolaChiave){
+        try {
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT * FROM esperienza WHERE titolo LIKE '"+parolaChiave+"' AND tag = '"+tag+"' AND toponimo = '"+toponimo+"' AND data = '"+data+"' ");
+            while (r.next()) {
+                System.out.print("TITOLO" +r.getString("titolo"));
+                System.out.print("DESCRIZIONE" +r.getString("descrizione"));
+                System.out.print("DATA" +r.getString("data"));
+                System.out.print("PREZZO" +r.getString("prezzo"));
+                System.out.print("EMAIL GUIDA" +r.getString("emailGuida"));
+                System.out.println("-------------------------------------------------");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void ricercaParolaChiave ( String parolaChiave){
+        try {
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT * FROM esperienza WHERE titolo LIKE '"+parolaChiave+"'  ");
+            while (r.next()) {
+                System.out.print("TITOLO" +r.getString("titolo"));
+                System.out.print("DESCRIZIONE" +r.getString("descrizione"));
+                System.out.print("DATA" +r.getString("data"));
+                System.out.print("PREZZO" +r.getString("prezzo"));
+                System.out.print("EMAIL GUIDA" +r.getString("emailGuida"));
+                System.out.println("-------------------------------------------------");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

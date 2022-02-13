@@ -105,4 +105,7 @@ public class Esperienza {
         this.toponimo = toponimo;
     }
 
+    public Toponimo getToponimo() {
+        return this.toponimo;
+    }
 }

@@ -1,4 +1,5 @@
 package it.unicam.cs;
+import static it.unicam.cs.App.gestoreEsperienze;
 
 import java.sql.SQLException;
 
@@ -37,7 +38,11 @@ public class Utente {
     }
 
     public void utenteEliminaAccount() throws SQLException {
-        //todo to implement
         GestoreAccount.utenteEliminaAccount(this);
+    }
+
+
+    public void effettuaRicerca(){
+        gestoreEsperienze.ricercaConFiltri();
     }
 }
