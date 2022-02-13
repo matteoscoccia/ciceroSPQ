@@ -1,5 +1,6 @@
 package it.unicam.cs;
 
+import java.net.StandardSocketOptions;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -69,7 +70,34 @@ public class App {
     }
 
     private static void visualizzaMenuTurista() {
-        //TODO IMPLEMENTARE MENU
+        int sceltaMenu = -1;
+        Scanner inputScanner = new Scanner(System.in);
+        do{
+            System.out.println("\n-----------MENU PRINCIPALE TURISTA-----------");
+            System.out.println("Benvenuto " + turista.getNome() + " " + turista.getCognome());
+            System.out.println("Scegli cosa vuoi fare:");
+            System.out.println("1) Effettua ricerca con filtri");
+            System.out.println("2) Visualizza profilo");
+            System.out.println("3) Contatta assistenza");
+            System.out.println("0) Esci");
+            System.out.println(">");
+            sceltaMenu = Integer.parseInt(inputScanner.nextLine());
+
+            switch (sceltaMenu){
+                case 1: {
+                    //TODO COLLEGARE AL METODO RICERCA CON FILTRI
+                    System.out.println("Hai selezionato ricerca con filtri");
+                }break;
+                case 2:{
+                    //TODO COLLEGARE AL METODO VISUALIZZA PROFILO
+                    System.out.println("Hai selezionato visualizza profilo");
+                }break;
+                case 3:{
+                    //TODO COLLEGARE AL METODO ASSISTENZA
+                    System.out.println("Hai selezionato contatta assistenza");
+                }
+            }
+        }while(sceltaMenu!=0);
     }
 
     private static void visualizzaMenuAssociazione() {
@@ -81,7 +109,34 @@ public class App {
     }
 
     private static void visualizzaMenuCicerone() {
-        //TODO IMPLEMENTARE MENU
+        int sceltaMenu = -1;
+        Scanner inputScanner = new Scanner(System.in);
+        do{
+            System.out.println("\n-----------MENU PRINCIPALE CICERONE-----------");
+            System.out.println("Benvenuto " + cicerone.getNome() + " " + cicerone.getCognome());
+            System.out.println("Scegli cosa vuoi fare:");
+            System.out.println("1) Effettua ricerca con filtri");
+            System.out.println("2) Visualizza profilo");
+            System.out.println("3) Contatta assistenza");
+            System.out.println("0) Esci");
+            System.out.println(">");
+            sceltaMenu = Integer.parseInt(inputScanner.nextLine());
+
+            switch (sceltaMenu){
+                case 1: {
+                    //TODO COLLEGARE AL METODO RICERCA CON FILTRI
+                    System.out.println("Hai selezionato ricerca con filtri");
+                }break;
+                case 2:{
+                    //TODO COLLEGARE AL METODO VISUALIZZA PROFILO
+                    System.out.println("Hai selezionato visualizza profilo");
+                }break;
+                case 3:{
+                    //TODO COLLEGARE AL METODO ASSISTENZA
+                    System.out.println("Hai selezionato contatta assistenza");
+                }
+            }
+        }while(sceltaMenu!=0);
     }
 
 }
