@@ -1,11 +1,14 @@
 package it.unicam.cs;
+import static it.unicam.cs.App.gestoreEsperienze;
+
+import java.sql.SQLException;
 
 public class Utente {
 
-    private String nome;
-    private String cognome;
-    private String email;
-    private String password;
+    private final String nome;
+    private final String cognome;
+    private final String email;
+    private final String password;
 
     public Utente(String nome, String cognome, String email, String password) {
         this.nome = nome;
@@ -30,4 +33,16 @@ public class Utente {
         return password;
     }
 
+    public void contattaAssistenza(){
+        Assistenza.getAssistenza(this);
+    }
+
+    public void utenteEliminaAccount() throws SQLException {
+        GestoreAccount.utenteEliminaAccount(this);
+    }
+
+
+    public void effettuaRicerca(){
+        gestoreEsperienze.ricercaConFiltri();
+    }
 }

@@ -233,4 +233,68 @@ public class GestoreEsperienze {
         if(conferma.equals("S")) DBManager.eliminareEsperienza(esperienzaDaEliminare);
         else System.out.println("Esperienzia non eliminata");
     }
+
+    public void condividiEsperienza(Esperienza esperienza){
+        String s = "\nCopia e condividi il seguente testo:" +
+                "\nPartecipa anche tu a questa esperienza!" +
+                "\nTitolo: " + esperienza.getTitolo() +
+                "\nDescrizione: " + esperienza.getDescrizione() +
+                "\nIdentificativo: " + esperienza.getId();
+        System.out.println(s);
+    }
+
+
+
+    public void ricercaConFiltri(){
+        String parolaChiave,conferma;
+        do {
+            System.out.println("Inserire parola chiave da ricercare");
+            parolaChiave = inputScanner.nextLine();
+            System.out.println("\n Vuoi ricerca con ricerca con filtri? S/N");
+            conferma = inputScanner.nextLine();
+        }while(!(conferma.equals("S") || conferma.equals("N")));
+        if(conferma.equals("S")){
+            Tag tag = scegliTag(DBManager.listaTag());
+            Toponimo toponimo = scegliToponimo(DBManager.listaToponimo());
+            Date data = scegliData(DBManager.listaDate());
+            DBManager.ricercaConFiltri(tag,toponimo, (java.sql.Date) data,parolaChiave);
+        }else{
+            DBManager.ricercaParolaChiave(parolaChiave);
+        }
+
+
+    }
+    private Tag scegliTag(ArrayList<Tag> listaTag){
+        for(int i=0;i<listaTag.size();i++){
+            System.out.println("" +i+"|" +listaTag.get(i));
+        }
+        int n;
+        do{
+            System.out.println("Inserire numero del tag desiderato");
+            n = Integer.parseInt(inputScanner.nextLine());
+        }while(n<0 || n>(listaTag.size()-1));
+        return listaTag.get(n);
+    }
+    private Toponimo scegliToponimo(ArrayList<Toponimo> listaToponimi){
+        for(int i=0;i<listaToponimi.size();i++){
+            System.out.println("" +i+"|" +listaToponimi.get(i));
+        }
+        int n;
+        do{
+            System.out.println("Inserire numero del tag desiderato");
+            n = Integer.parseInt(inputScanner.nextLine());
+        }while(n<0 || n>(listaToponimi.size()-1));
+        return listaToponimi.get(n);
+    }
+    private Date scegliData(ArrayList<Date> listaDate){
+        for(int i=0;i<listaDate.size();i++){
+            System.out.println("" +i+"|" +listaDate.get(i));
+        }
+        int n;
+        do{
+            System.out.println("Inserire numero del tag desiderato");
+            n = Integer.parseInt(inputScanner.nextLine());
+        }while(n<0 || n>(listaDate.size()-1));
+        return listaDate.get(n);
+    }
 }
