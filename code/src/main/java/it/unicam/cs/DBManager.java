@@ -1,6 +1,5 @@
 package it.unicam.cs;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,6 +11,7 @@ public class DBManager {
     private String user;
     private String pwd;
     private static Connection conn = null;
+
 
 
     public void setDBManager(String url, String user, String pwd) {
@@ -140,6 +140,7 @@ public class DBManager {
     }
 
     public static void eliminareCiceroneAssociazione (String emailCicerone){
+        //TODO PER FARE UN UPDATE BISOGNA USARE executeUpdate
         try {
             Statement s = conn.createStatement();
             ResultSet r = s.executeQuery("UPDATE utente SET emailAssociazione = NULL WHERE email = '"+emailCicerone+"'" );
@@ -161,6 +162,7 @@ public class DBManager {
 
     public static void modoficaDisponibilita ( String emailCicerone, Date nuovaData){
         //TODO RIVEDERE: LA DATA VA AGGIUNTA, NON AGGIORNATA
+        //E POI PER ESEGUIRE UN UPDATE O INSERT VA USATO executeUpdate
         try {
             Statement s = conn.createStatement();
             ResultSet r = s.executeQuery("UPDATE disponibilita SET data = '"+nuovaData+"' WHERE email = '"+emailCicerone+"'" );
@@ -186,7 +188,7 @@ public class DBManager {
     public static void registraEsperienza(Esperienza nuovaEsperienza) {
         try{
             Statement s = conn.createStatement();
-            int id = nuovaEsperienza.getId().hashCode();//Non posso convertire direttamente UUID in int
+            int id = nuovaEsperienza.getId();
             String titolo = nuovaEsperienza.getTitolo();
             String descrizione = nuovaEsperienza.getDescrizione();
             //Converto la data nel formato giusto per MySQL
@@ -198,23 +200,25 @@ public class DBManager {
             int postiMinimi = nuovaEsperienza.getPostiMinimi();
             float prezzo = nuovaEsperienza.getPrezzo();
             String toponimo = nuovaEsperienza.getToponimo().getNome();
-            ResultSet r = s.executeQuery("INSERT INTO esperienza VALUES ("+id+",'"+titolo+"','"+descrizione+"','"+mysqlDate+"',"+postiDisponibili+","+ postiMassimi + "," + postiMinimi + "," + prezzo + ",'"+ ""+ "','" + toponimo + "'"+ ")");
+            int r = s.executeUpdate("INSERT INTO esperienza VALUES ("+id+",'"+titolo+"','"+descrizione+"','"+mysqlDate+"',"+postiDisponibili+","+ postiMassimi + "," + postiMinimi + "," + prezzo + ",' ',"+"'" + toponimo + "')");
         }catch (SQLException e){
             e.printStackTrace();
+            System.out.println("ERROR CODE:"+e.getErrorCode()+e.getMessage());
+
         }
     }
 
     public static void registraTappe(Esperienza nuovaEsperienza, ArrayList<Tappa> tappeEsperienza) {
         try{
             Statement s = conn.createStatement();
-            ResultSet r;
+            int r;
             for (Tappa t:
                  tappeEsperienza) {
                 String nomeTappa = t.getNome();
                 String descrizioneTappa = t.getDescrizione();
                 String indirizzoTappa = t.getIndirizzo();
-                int idEsperienza = nuovaEsperienza.getId().hashCode();
-                r = s.executeQuery("INSERT INTO tappa VALUES ('"+nomeTappa+"','"+ descrizioneTappa+ "','" + indirizzoTappa + "'," +idEsperienza + ")");
+                int idEsperienza = nuovaEsperienza.getId();
+                r = s.executeUpdate("INSERT INTO tappa VALUES ('"+nomeTappa+"','"+ descrizioneTappa+ "','" + indirizzoTappa + "'," +idEsperienza + ")");
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -224,15 +228,60 @@ public class DBManager {
     public static void registraTag(Esperienza nuovaEsperienza, ArrayList<Tag> tagEsperienza) {
         try{
             Statement s = conn.createStatement();
-            ResultSet r;
+            int r;
             for (Tag t:
                     tagEsperienza) {
                 String nomeTag = t.getName();
-                int idEsperienza = nuovaEsperienza.getId().hashCode();
-                r = s.executeQuery("INSERT INTO esperienza_tag VALUES ("+idEsperienza+",'"+ nomeTag + "')");
+                int idEsperienza = nuovaEsperienza.getId();
+                r = s.executeUpdate("INSERT INTO esperienza_tag VALUES ("+idEsperienza+",'"+ nomeTag + "')");
             }
         }catch (SQLException e){
             e.printStackTrace();
         }
+    }
+
+
+    public static void registraGuidaEsperienza(Cicerone ciceroneDaAssociare, int idEsperienza) {
+        try{
+            Statement s = conn.createStatement();
+            int r = s.executeUpdate("UPDATE esperienza SET emailGuida = '"+ciceroneDaAssociare.getEmail()+"' WHERE id="+idEsperienza);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList<Tag> leggiTagRegistrati() {
+        ArrayList<Tag> tagRegistrati = new ArrayList<>();
+        try{
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT * FROM tag");
+            while(r.next()){
+                tagRegistrati.add(new Tag(r.getString("nome")));
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return tagRegistrati;
+    }
+
+    public static ArrayList<String> selezionaCiceroniDisponibili(String emailAssociazione, java.util.Date dataEsperienza) {
+        ArrayList<String> emailCiceroniDisponibili = new ArrayList<>();
+
+        //Converto la data nel formato giusto per MySQL
+        String pattern = "yyyy-MM-dd";
+        SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+        String mysqlDate = formatter.format(dataEsperienza);
+
+        try{
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT * FROM utente JOIN disponibilita WHERE email = emailCicerone AND emailAssociazione='"+emailAssociazione+"' AND data='"+mysqlDate+"'");
+            while(r.next()){
+                emailCiceroniDisponibili.add(r.getString("email"));
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return emailCiceroniDisponibili;
     }
 }

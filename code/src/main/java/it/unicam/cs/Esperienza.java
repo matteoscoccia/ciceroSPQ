@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Esperienza {
-    private final String id;
+    private final int id;
     private  String titolo;
     private  String descrizione;
     private Date data;
@@ -19,14 +19,14 @@ public class Esperienza {
     private ArrayList<Tappa> tappe;
     private Cicerone guida;
 
-    public Esperienza(String id, String titolo, String descrizione, Date data) {
+    public Esperienza(int id, String titolo, String descrizione, Date data) {
         this.id = id;
         this.titolo = titolo;
         this.descrizione = descrizione;
         this.data = data;
     }
 
-    public String getId(){
+    public int getId(){
         return this.id;
     }
 
@@ -92,6 +92,7 @@ public class Esperienza {
 
     public void associaCicerone (Cicerone ciceroneDaAssociare){
         this.guida = ciceroneDaAssociare;
+        DBManager.registraGuidaEsperienza(ciceroneDaAssociare, id);
     }
     public void associaToponimo (Toponimo toponimoDaAssociare){
         //TODO

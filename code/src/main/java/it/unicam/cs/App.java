@@ -173,8 +173,7 @@ public class App {
                     System.out.println("Hai selezionato contatta assistenza");
                 }break;
                 case 4:{
-                    //TODO COLLEGARE AL METODO AGGIUNGI ESPERIENZA
-                    System.out.println("Hai selezionato aggiungi esperienza");
+                    associazione.aggiungiEsperienza();
                 }break;
                 case 5:{
                     //TODO COLLEGARE AL METODO AGGIUNGI CICERONE AD ASSOCIAZIONE

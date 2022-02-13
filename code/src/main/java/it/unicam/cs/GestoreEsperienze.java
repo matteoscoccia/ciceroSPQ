@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.UUID;
-
+import java.util.concurrent.ThreadLocalRandom;
 
 
 public class GestoreEsperienze {
@@ -80,7 +80,7 @@ public class GestoreEsperienze {
         }catch (ParseException e){
             System.out.println("\nData non corretta");
         }
-        String id = UUID.randomUUID().toString();
+        int id = ThreadLocalRandom.current().nextInt(10000, 500000);//Genera numero casuale
 
         Esperienza nuovaEsperienza = new Esperienza(id, titolo, descrizione, data);
 
@@ -193,13 +193,22 @@ public class GestoreEsperienze {
     }
 
     private ArrayList<Tag> inserimentoTag(Esperienza nuovaEsperienza) {
-        ArrayList<Tag> listaTag = new ArrayList<>();
+        ArrayList<Tag> listaTag = DBManager.leggiTagRegistrati();//Preleva i tag dal DB
+        ArrayList<Tag> listaTagEsperienza = new ArrayList<>();
+
         boolean continuaInserimento;
+        int count;
         do{
-            System.out.println("\nNome tag: ");
-            String nomeTag = inputScanner.nextLine();
-            Tag nuovoTag = new Tag(nomeTag);
-            listaTag.add(nuovoTag);
+            count = 1;
+            System.out.println("\nTag Disponibili:");
+            for (Tag t:
+                 listaTag) {
+                System.out.println(count+")"+t.getName());
+                count++;
+            }
+            System.out.println("Inserire numero tag: ");
+            int scelta = Integer.parseInt(inputScanner.nextLine());
+            listaTagEsperienza.add(listaTag.get(scelta-1));
             String choice;
             do{
                 System.out.println("\n\nContinuare inserimento? S/N");
@@ -207,8 +216,8 @@ public class GestoreEsperienze {
             } while(!(choice.equals("S") || choice.equals("N")));
             continuaInserimento = !choice.equals("N");
         } while(continuaInserimento);
-        nuovaEsperienza.setTag(listaTag);
-        return listaTag;
+        nuovaEsperienza.setTag(listaTagEsperienza);
+        return listaTagEsperienza;
     }
 
     public void rimuoviEsperienza(Esperienza esperienzaDaEliminare, Amministrazione amministrazione){

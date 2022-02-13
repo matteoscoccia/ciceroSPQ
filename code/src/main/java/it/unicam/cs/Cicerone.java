@@ -16,9 +16,11 @@ public class Cicerone extends Utente{
     public String getEmailAssociazione(){
         return this.emailAssociazione;
     }
+
     public void aggiungiEsperienza(){
         Esperienza esperienzaCreata = gestoreEsperienze.aggiungiEsperienza();
         esperienzaCreata.associaCicerone(this);
+        System.out.println("Esperienza registrata");
     }
 
     public void visualizzaProfilo(){
