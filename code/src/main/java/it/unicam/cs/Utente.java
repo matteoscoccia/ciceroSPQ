@@ -1,4 +1,5 @@
 package it.unicam.cs;
+import static it.unicam.cs.App.gestoreEsperienze;
 
 public class Utente {
 
@@ -30,4 +31,8 @@ public class Utente {
         return password;
     }
 
+
+    public void effettuaRicerca(){
+        gestoreEsperienze.ricercaConFiltri();
+    }
 }

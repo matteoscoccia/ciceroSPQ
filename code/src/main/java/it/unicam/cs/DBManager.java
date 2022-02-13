@@ -1,6 +1,5 @@
 package it.unicam.cs;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -113,7 +112,7 @@ public class DBManager {
 
         try {
             Statement s = conn.createStatement();
-            ResultSet r = s.executeQuery("SELECT FROM utente WHERE tipo = 'c' " );
+            ResultSet r = s.executeQuery("SELECT * FROM utente WHERE tipo = 'c' " );
             while(r.next()){
                 //TODO CONTROLLARE NOMI TABELLE NEL DB
                 listaCiceroni.add(new Cicerone(r.getString("nome"),r.getString("cognome"),r.getString("email"),r.getString("password"),r.getString("emailassociazione")));
@@ -128,7 +127,7 @@ public class DBManager {
         ArrayList<Cicerone> listaCiceroni = new ArrayList<>();
         try {
             Statement s = conn.createStatement();
-            ResultSet r = s.executeQuery("SELECT FROM utente WHERE emailAssociazione = '"+emailAssociazione+"' " );
+            ResultSet r = s.executeQuery("SELECT * FROM utente WHERE emailAssociazione = '"+emailAssociazione+"' " );
             while(r.next()){
                 //TODO CONTROLLARE NOMI TABELLE NEL DB
                 listaCiceroni.add(new Cicerone(r.getString("nome"),r.getString("cognome"),r.getString("email"),r.getString("password"),r.getString("emailAssociazione")));
@@ -232,6 +231,82 @@ public class DBManager {
                 r = s.executeQuery("INSERT INTO esperienza_tag VALUES ("+idEsperienza+",'"+ nomeTag + "')");
             }
         }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList<Tag> listaTag (){
+        ArrayList<Tag> listaTag = new ArrayList<>();
+        try {
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT * FROM tag" );
+            while(r.next()){
+                listaTag.add(new Tag (r.getString("nome")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaTag;
+    }
+
+    public static ArrayList<Toponimo> listaToponimo(){
+        ArrayList<Toponimo> listaToponimo = new ArrayList<Toponimo>();
+        try {
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT * FROM toponimo");
+            while (r.next()) {
+                listaToponimo.add(new Toponimo(r.getString("nome")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaToponimo;
+    }
+
+    public static ArrayList<java.util.Date> listaDate(){
+        ArrayList<java.util.Date> listaDate = new ArrayList<>();
+        try {
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT DISTINCT data FROM esperienza");
+            while (r.next()) {
+                listaDate.add(new Date(r.getDate("data").getYear(),r.getDate("data").getMonth(),r.getDate("data").getDay())   );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaDate;
+    }
+
+    public static void ricercaConFiltri (Tag tag ,Toponimo toponimo , Date data, String parolaChiave){
+        try {
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT * FROM esperienza WHERE titolo LIKE '"+parolaChiave+"' AND tag = '"+tag+"' AND toponimo = '"+toponimo+"' AND data = '"+data+"' ");
+            while (r.next()) {
+                System.out.print("TITOLO" +r.getString("titolo"));
+                System.out.print("DESCRIZIONE" +r.getString("descrizione"));
+                System.out.print("DATA" +r.getString("data"));
+                System.out.print("PREZZO" +r.getString("prezzo"));
+                System.out.print("EMAIL GUIDA" +r.getString("emailGuida"));
+                System.out.println("-------------------------------------------------");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void ricercaParolaChiave ( String parolaChiave){
+        try {
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT * FROM esperienza WHERE titolo LIKE '"+parolaChiave+"'  ");
+            while (r.next()) {
+                System.out.print("TITOLO" +r.getString("titolo"));
+                System.out.print("DESCRIZIONE" +r.getString("descrizione"));
+                System.out.print("DATA" +r.getString("data"));
+                System.out.print("PREZZO" +r.getString("prezzo"));
+                System.out.print("EMAIL GUIDA" +r.getString("emailGuida"));
+                System.out.println("-------------------------------------------------");
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
