@@ -1,4 +1,5 @@
 package it.unicam.cs;
+import static it.unicam.cs.App.gestoreEsperienze;
 
 public class Amministrazione {
 
@@ -6,5 +7,9 @@ public class Amministrazione {
 
     public Amministrazione(String email) {
         this.email = email;
+    }
+
+    public void eliminaEsperienza(Esperienza esperienzaDaEliminare){
+        gestoreEsperienze.rimuoviEsperienza(esperienzaDaEliminare,this);
     }
 }

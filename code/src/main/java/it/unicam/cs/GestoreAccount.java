@@ -1,6 +1,8 @@
 package it.unicam.cs;
 
+import java.sql.Array;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,4 +49,31 @@ public class GestoreAccount {
         return false;
     }
 
+    public void rimuoviCicerone(Associazione associazione){
+        Scanner scanner = new Scanner(System.in);
+        String emailCiceroneEliminare,conferma;
+        do{
+            System.out.println("Inserire email cicerone da eliminare");
+            emailCiceroneEliminare = scanner.nextLine();
+            System.out.println("Cicerone da eliminare : " +emailCiceroneEliminare);
+            System.out.println("Confermare S/N");
+            conferma = scanner.nextLine();
+        }while(!(conferma.equals("S") || conferma.equals("N")));
+        if(conferma.equals("S")){
+            if(verificaAppartenenza(emailCiceroneEliminare,associazione)){
+                DBManager.eliminareCiceroneAssociazione(emailCiceroneEliminare);
+                System.out.println("Cicerone eliminato dalla propria associazione");
+            }
+        }
+
+    }
+
+    private boolean verificaAppartenenza(String emailCicerone, Associazione associazione){
+        ArrayList<Cicerone> listaCiceroni = DBManager.listaCiceroni();
+        for (Cicerone cicerone:listaCiceroni) {
+            if(cicerone.getEmail().equals(emailCicerone) && cicerone.getEmailAssociazione().equals(associazione.getEmail()))
+                return true;
+        }
+        return false;
+    }
 }

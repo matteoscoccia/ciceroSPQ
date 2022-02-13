@@ -169,4 +169,17 @@ public class GestoreEsperienze {
         nuovaEsperienza.setTag(listaTag);
     }
 
+    public void rimuoviEsperienza(Esperienza esperienzaDaEliminare, Amministrazione amministrazione){
+        if( esperienzaDaEliminare.getPostiMassimi()-esperienzaDaEliminare.getPostiDisponibili()!= 0) {
+            System.out.println("Impossibile eliminare esperienza");
+            return;
+        }
+        String conferma;
+        do{
+            System.out.println("Confermare eliminazione esperienza S/N");
+            conferma = inputScanner.nextLine();
+        }while(!(conferma.equals("S") || conferma.equals("N")));
+        if(conferma.equals("S")) DBManager.eliminareEsperienza(esperienzaDaEliminare);
+        else System.out.println("Esperienzia non eliminata");
+    }
 }
