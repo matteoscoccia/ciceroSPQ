@@ -1,11 +1,13 @@
 package it.unicam.cs;
 
+import java.sql.SQLException;
+
 public class Utente {
 
-    private String nome;
-    private String cognome;
-    private String email;
-    private String password;
+    private final String nome;
+    private final String cognome;
+    private final String email;
+    private final String password;
 
     public Utente(String nome, String cognome, String email, String password) {
         this.nome = nome;
@@ -28,5 +30,14 @@ public class Utente {
 
     public String getPassword() {
         return password;
+    }
+
+    public void contattaAssistenza(){
+        Assistenza.getAssistenza(this);
+    }
+
+    public void utenteEliminaAccount() throws SQLException {
+        //todo to implement
+        GestoreAccount.utenteEliminaAccount(this);
     }
 }

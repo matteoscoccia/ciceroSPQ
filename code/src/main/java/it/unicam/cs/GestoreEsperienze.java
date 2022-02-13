@@ -169,4 +169,15 @@ public class GestoreEsperienze {
         nuovaEsperienza.setTag(listaTag);
     }
 
+    public void condividiEsperienza(Esperienza esperienza){
+        String s = "\nCopia e condividi il seguente testo:" +
+                "\nPartecipa anche tu a questa esperienza!" +
+                "\nTitolo: " + esperienza.getTitolo() +
+                "\nDescrizione: " + esperienza.getDescrizione() +
+                "\nIdentificativo: " + esperienza.getId();
+        System.out.println(s);
+    }
+
+
+
 }

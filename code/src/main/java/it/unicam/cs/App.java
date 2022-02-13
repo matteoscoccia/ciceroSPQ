@@ -14,12 +14,14 @@ public class App {
     public static Associazione associazione;
     public static Turista turista;
     public static Amministrazione amministrazione;
+    public static Assistenza assistenza;
 
 
     public static void main(String[] args){
         //SETUP
         gestoreEsperienze = new GestoreEsperienze();
         gestoreAccount = new GestoreAccount();
+        assistenza = new Assistenza();
         Scanner inputScanner = new Scanner(System.in);
 
         //DB SETUP
@@ -93,8 +95,8 @@ public class App {
                     System.out.println("Hai selezionato visualizza profilo");
                 }break;
                 case 3:{
-                    //TODO COLLEGARE AL METODO ASSISTENZA
                     System.out.println("Hai selezionato contatta assistenza");
+                    Assistenza.getAssistenza(turista);
                 }
             }
         }while(sceltaMenu!=0);
@@ -132,8 +134,8 @@ public class App {
                     System.out.println("Hai selezionato visualizza profilo");
                 }break;
                 case 3:{
-                    //TODO COLLEGARE AL METODO ASSISTENZA
                     System.out.println("Hai selezionato contatta assistenza");
+                    Assistenza.getAssistenza(cicerone);
                 }
             }
         }while(sceltaMenu!=0);

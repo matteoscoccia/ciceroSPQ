@@ -11,7 +11,6 @@ public class DBManager {
     private String pwd;
     private static Connection conn = null;
 
-
     public void setDBManager(String url, String user, String pwd) {
         this.url = url;
         this.user = user;
@@ -97,5 +96,34 @@ public class DBManager {
         return ciceroni;
     }
 
+    public static void addCiceroneTo(String email, Associazione associazione) throws SQLException {
+        associazione.getEmailCiceroniAssociati().add(email);
+        Statement s = conn.createStatement();
+        s.executeQuery(" UPDATE Utente set emailAssociazione = '"+associazione.getEmail()+"' WHERE email = '"+email+"' ");
+    }
+
+    public static boolean esistenzaCicerone(String emailCicerone) throws SQLException {
+        Statement s = conn.createStatement();
+        ResultSet r = s.executeQuery("SELECT Utente WHERE email = '"+emailCicerone+"'");
+        return r.next();
+    }
+
+    public static boolean controlloAssociazione(String email) throws SQLException{
+        Statement s = conn.createStatement();
+        ResultSet r = s.executeQuery("SELECT Utente WHERE emailAssociazione = '"+email+"' ");
+        return r.next();
+    }
+
+    public static boolean controllaEsistenza(String emailDaEliminare) throws SQLException {
+        Statement s = conn.createStatement();
+        ResultSet r = s.executeQuery("SELECT Utente WHERE email = '"+emailDaEliminare+"' ");
+        return r.next();
+    }
+
+    public static void eliminaUtente(String email, String motivazione) throws SQLException {
+        Statement s = conn.createStatement();
+        s.executeQuery("DELETE FROM Utente WHERE email ='"+email+"';");
+        // invio String motivazione tramite Server email
+    }
 
 }
