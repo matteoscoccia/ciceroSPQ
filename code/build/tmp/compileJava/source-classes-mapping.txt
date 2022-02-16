@@ -1,0 +1,38 @@
+it/unicam/cs/utente/Visitatore.java
+ it.unicam.cs.utente.Visitatore
+it/unicam/cs/utente/GestoreAccount.java
+ it.unicam.cs.utente.GestoreAccount
+it/unicam/cs/esperienza/Partecipante.java
+ it.unicam.cs.esperienza.Partecipante
+it/unicam/cs/utente/Associazione.java
+ it.unicam.cs.utente.Associazione
+it/unicam/cs/esperienza/GestoreEsperienze.java
+ it.unicam.cs.esperienza.GestoreEsperienze
+it/unicam/cs/amministrazione/Amministrazione.java
+ it.unicam.cs.amministrazione.Amministrazione
+it/unicam/cs/main/App.java
+ it.unicam.cs.main.App
+it/unicam/cs/utente/Cicerone.java
+ it.unicam.cs.utente.Cicerone
+it/unicam/cs/utente/Turista.java
+ it.unicam.cs.utente.Turista
+it/unicam/cs/esperienza/Toponimo.java
+ it.unicam.cs.esperienza.Toponimo
+it/unicam/cs/storage/DBManager.java
+ it.unicam.cs.storage.DBManager
+it/unicam/cs/esperienza/Esperienza.java
+ it.unicam.cs.esperienza.Esperienza
+it/unicam/cs/utente/Utente.java
+ it.unicam.cs.utente.Utente
+it/unicam/cs/pagamento/Pagamento.java
+ it.unicam.cs.pagamento.Pagamento
+it/unicam/cs/amministrazione/GestoreToponimi.java
+ it.unicam.cs.amministrazione.GestoreToponimi
+it/unicam/cs/esperienza/Tappa.java
+ it.unicam.cs.esperienza.Tappa
+it/unicam/cs/assistenza/Assistenza.java
+ it.unicam.cs.assistenza.Assistenza
+it/unicam/cs/esperienza/Tag.java
+ it.unicam.cs.esperienza.Tag
+it/unicam/cs/amministrazione/GestoreTag.java
+ it.unicam.cs.amministrazione.GestoreTag
