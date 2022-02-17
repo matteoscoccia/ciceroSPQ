@@ -32,14 +32,14 @@ public class GestoreAccount {
             System.out.println("Inserisci email del cicerone che vuoi aggiungere: ['exit' per uscire]");
             email = scanner.nextLine();
             if(email.equals("exit")) break;
-            if(!DBManager.esistenzaCicerone(email)) {
+            if(DBManager.esistenzaCicerone(email)) {
                 if (!DBManager.controlloAssociazione(email)) {
                     DBManager.addCiceroneTo(email, associazione);
+                    System.out.println("Cicerone associato correttamente");
                     valido = true;
                 } else System.out.println("Cicerone gia associato ad una associazione");
             } else System.out.println("Email non associata a nessun cicerone");
         } while(!valido);
-        System.out.println("Cicerone associato correttamente");
     }
 
     public static void adminEliminaAccount() throws SQLException {
@@ -78,7 +78,11 @@ public class GestoreAccount {
             if(verificaAppartenenza(emailCiceroneEliminare,associazione)){
                 DBManager.eliminareCiceroneAssociazione(emailCiceroneEliminare);
                 System.out.println("Cicerone eliminato dalla propria associazione");
+            }else{
+                System.out.println("Il cicerone inserito non appartiene all'associazione");
             }
+        }else{
+            System.out.println("\nOperazione annullata");
         }
 
     }

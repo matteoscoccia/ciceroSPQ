@@ -9,6 +9,7 @@ import it.unicam.cs.utente.Cicerone;
 import it.unicam.cs.utente.GestoreAccount;
 import it.unicam.cs.utente.Turista;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -112,8 +113,11 @@ public class App {
                     System.out.println("Hai selezionato elimina Toponimo");
                 }break;
                 case 6:{
-                    //TODO COLLEGARE AL METODO ELIMINA ACCOUNT
-                    System.out.println("Hai selezionato elimina Account");
+                    try {
+                        amministrazione.eliminaAccount();
+                    }catch(SQLException e){
+                        e.printStackTrace();
+                    }
                 }break;
             }
         }while(sceltaMenu!=0);
@@ -139,13 +143,11 @@ public class App {
                     System.out.println("Hai selezionato ricerca con filtri");
                 }break;
                 case 2:{
-                    //TODO COLLEGARE AL METODO VISUALIZZA PROFILO
-                    System.out.println("Hai selezionato visualizza profilo");
+                    turista.visualizzaProfilo();
                 }break;
                 case 3:{
-                    //TODO COLLEGARE AL METODO ASSISTENZA
                     System.out.println("Hai selezionato contatta assistenza");
-                    Assistenza.getAssistenza(turista);
+                    turista.contattaAssistenza();
                 }
             }
         }while(sceltaMenu!=0);
@@ -175,23 +177,23 @@ public class App {
                     System.out.println("Hai selezionato ricerca con filtri");
                 }break;
                 case 2:{
-                    //TODO COLLEGARE AL METODO VISUALIZZA PROFILO
-                    System.out.println("Hai selezionato visualizza profilo");
+                    associazione.visualizzaProfilo();
                 }break;
                 case 3:{
-                    //TODO COLLEGARE AL METODO ASSISTENZA
-                    System.out.println("Hai selezionato contatta assistenza");
+                    associazione.contattaAssistenza();
                 }break;
                 case 4:{
                     associazione.aggiungiEsperienza();
                 }break;
                 case 5:{
-                    //TODO COLLEGARE AL METODO AGGIUNGI CICERONE AD ASSOCIAZIONE
-                    System.out.println("Hai selezionato aggiungi cicerone alla tua associazione");
+                    try {
+                        associazione.associaCicerone();
+                    }catch(SQLException e){
+                        e.printStackTrace();
+                    }
                 }break;
                 case 6:{
-                    //TODO COLLEGARE AL METODO ELIMINA CICERONE DA ASSOCIAZIONE
-                    System.out.println("Hai selezionato elimina un cicerone dalla tua associazione");
+                    associazione.rimuoviCicerone();
                 }break;
                 case 7:{
                     //TODO COLLEGARE AL METODO PROPONI TAG
@@ -224,22 +226,16 @@ public class App {
                     System.out.println("Hai selezionato ricerca con filtri");
                 }break;
                 case 2:{
-                    //TODO COLLEGARE AL METODO VISUALIZZA PROFILO
-                    System.out.println("Hai selezionato visualizza profilo");
+                    cicerone.visualizzaProfilo();
                 }break;
                 case 3:{
-                    //TODO COLLEGARE AL METODO ASSISTENZA
-                    System.out.println("Hai selezionato contatta assistenza");
-                    Assistenza.getAssistenza(cicerone);
+                    cicerone.contattaAssistenza();
                 }break;
                 case 4:{
-                    //TODO COLLEGARE AL METODO AGGIUNGI ESPERIENZA
-                    System.out.println("Hai selezionato aggiungi esperienza");
                     cicerone.aggiungiEsperienza();
                 }break;
                 case 5:{
-                    //TODO COLLEGARE AL METODO MODIFICA DISPONIBILITA
-                    System.out.println("Hai selezionato modifica disponibilita");
+                    cicerone.modificaDisponibilita();
                 }break;
                 case 6:{
                     //TODO COLLEGARE AL METODO PROPONI TAG

@@ -3,6 +3,7 @@ package it.unicam.cs.utente;
 import it.unicam.cs.storage.DBManager;
 import it.unicam.cs.esperienza.Esperienza;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -37,13 +38,14 @@ public class Cicerone extends Utente {
         Date nuovaData;
         int anno,mese,giorno;
         Scanner scanner = new Scanner(System.in);
-        System.out.println("La tua attuale disponibilità è : " + DBManager.visualizzaDisponibilitaCicerone(this.getEmail()));
+        System.out.println("La tua attuale disponibilità è : ");
+        DBManager.visualizzaDisponibilitaCicerone(this.getEmail());
         System.out.println("Inserire nuova disponibilità ");
-        System.out.println("Inserire giorno ");
+        System.out.println("Inserire giorno: ");
         giorno= Integer.parseInt(scanner.nextLine());
-        System.out.println("Inserire mese ");
+        System.out.println("Inserire mese: ");
         mese= Integer.parseInt(scanner.nextLine());
-        System.out.println("Inserire anno ");
+        System.out.println("Inserire anno: ");
         anno= Integer.parseInt(scanner.nextLine());
         do{
             System.out.println("Nuova disponibilità: " +giorno+"/"+mese+"/"+anno);
@@ -51,10 +53,14 @@ public class Cicerone extends Utente {
             conferma = scanner.nextLine();
         }while( !(conferma.equals("S") || conferma.equals("N")));
         if(conferma.equals("S")){
-            //TODO VEDERE ERRORE CHE IN REALTA NON SEMBRA ERRORE
-            nuovaData = new Date(anno,mese,giorno);
-            DBManager.modoficaDisponibilita(this.getEmail(), (java.sql.Date) nuovaData);
-            System.out.println("Disponibilità modificata ");
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.YEAR, anno);
+            cal.set(Calendar.MONTH, mese-1);
+            cal.set(Calendar.DAY_OF_MONTH, giorno);
+            nuovaData = cal.getTime();
+            System.out.println(nuovaData);
+            DBManager.modificaDisponibilita(this.getEmail(), nuovaData);
+            System.out.println("Disponibilità aggiunta ");
         }else System.out.println("Disponibilità non modificata");
     }
 }

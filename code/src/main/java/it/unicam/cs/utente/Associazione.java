@@ -67,11 +67,10 @@ public class Associazione extends Utente {
 
     public void visualizzaProfilo(){
         System.out.println("Nome : " +this.getNome());
-        System.out.println("Cognome : " +this.getCognome());
         System.out.println("Email : " +this.getEmail());
         ArrayList<Cicerone> listaCiceroniAssociati;
         listaCiceroniAssociati = DBManager.listaCiceroniAssociati(this.getEmail());
-        System.out.println("LISTA CICERONI ASSOCIATI A QUESTA ASSOCIAZIONE");
+        System.out.println("\nLISTA CICERONI ASSOCIATI A QUESTA ASSOCIAZIONE");
         for (Cicerone cicerone : listaCiceroniAssociati) {
             System.out.println(cicerone.getEmail());
         }

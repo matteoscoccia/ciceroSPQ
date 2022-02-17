@@ -43,18 +43,22 @@ public class GestoreEsperienze {
         this.creaRiepilogoEsperienza(esperienza,partecipanti.size());
         String conferma;
         do{
-            System.out.println("\n Confermare esperienza? S/N ");
+            System.out.println("\n Confermare prenotazione? S/N ");
             conferma = inputScanner.nextLine();
         } while(conferma.equals("S") || conferma.equals("N"));
         if(conferma.equals("S")){
             Pagamento pagamento = new Pagamento((partecipanti.size() * esperienza.getPrezzo()), turista, esperienza);
+            esperienza.setPostiDisponibili(esperienza.getPostiDisponibili()-partecipanti.size());
             System.out.println("\n PAGAMENTO IN CORSO ...");
+            //TODO CONTROLLARE CHE L'INTERAZIONE COL DB FUNZIONI
+            DBManager.registraPagamento(pagamento);
+            DBManager.aggiornaPostiEsperienza(esperienza);
+            DBManager.registraPartecipanti(esperienza, partecipanti);
             System.out.println("\n PAGAMENTO EFFETTUATO CON SUCCESO");
         } else{
             System.out.println("\n ANNULLAMENTO PRENOTAZIONE IN CORSO ... ");
             System.out.println("\n PRENOTAZIONE ANNULLATA");
         }
-        //TODO INTERAZIONE CON DB
     }
 
     public void creaRiepilogoEsperienza(Esperienza esperienza, int numPartecipanti){
@@ -117,10 +121,6 @@ public class GestoreEsperienze {
         }while(!(conferma.equals("S") || conferma.equals("N")));
 
         if(conferma.equals("S")) {
-            //TODO INSERIRE ESPERIENZA NEL DB
-            //TODO INSERIRE TAPPE NEL DB
-            //TODO INSERIRE TAG NEL DB
-            // TODO correggere: inserire emailGuida
             try {
                 DBManager.registraEsperienza(nuovaEsperienza);
                 DBManager.registraTappe(nuovaEsperienza, tappeEsperienza);

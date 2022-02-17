@@ -1,15 +1,14 @@
 package it.unicam.cs.storage;
 
-import it.unicam.cs.esperienza.Esperienza;
-import it.unicam.cs.esperienza.Tag;
-import it.unicam.cs.esperienza.Tappa;
-import it.unicam.cs.esperienza.Toponimo;
+import it.unicam.cs.esperienza.*;
+import it.unicam.cs.pagamento.Pagamento;
 import it.unicam.cs.utente.Associazione;
 import it.unicam.cs.utente.Cicerone;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class DBManager {
 
@@ -18,7 +17,6 @@ public class DBManager {
     private String user;
     private String pwd;
     private static Connection conn = null;
-
 
 
     public void setDBManager(String url, String user, String pwd) {
@@ -109,30 +107,31 @@ public class DBManager {
     public static void addCiceroneTo(String email, Associazione associazione) throws SQLException {
         associazione.getEmailCiceroniAssociati().add(email);
         Statement s = conn.createStatement();
-        s.executeQuery(" UPDATE Utente set emailAssociazione = '"+associazione.getEmail()+"' WHERE email = '"+email+"' ");
+        s.executeUpdate(" UPDATE utente SET emailAssociazione = '"+associazione.getEmail()+"' WHERE email = '"+email+"' ");
     }
 
     public static boolean esistenzaCicerone(String emailCicerone) throws SQLException {
         Statement s = conn.createStatement();
-        ResultSet r = s.executeQuery("SELECT Utente WHERE email = '"+emailCicerone+"'");
+        ResultSet r = s.executeQuery("SELECT * FROM utente WHERE email = '"+emailCicerone+"'");
         return r.next();
     }
 
     public static boolean controlloAssociazione(String email) throws SQLException{
         Statement s = conn.createStatement();
-        ResultSet r = s.executeQuery("SELECT Utente WHERE emailAssociazione = '"+email+"' ");
-        return r.next();
+        ResultSet r = s.executeQuery("SELECT emailAssociazione FROM utente WHERE email = '"+email+"' ");
+        r.next();
+        return r.getString("emailAssociazione") != null;
     }
 
     public static boolean controllaEsistenza(String emailDaEliminare) throws SQLException {
         Statement s = conn.createStatement();
-        ResultSet r = s.executeQuery("SELECT Utente WHERE email = '"+emailDaEliminare+"' ");
+        ResultSet r = s.executeQuery("SELECT * FROM utente WHERE email = '"+emailDaEliminare+"'");
         return r.next();
     }
 
     public static void eliminaUtente(String email, String motivazione) throws SQLException {
         Statement s = conn.createStatement();
-        s.executeQuery("DELETE FROM Utente WHERE email ='"+email+"';");
+        s.executeUpdate("DELETE FROM utente WHERE email ='"+email+"'");
         // invio String motivazione tramite Server email
     }
     public static void eliminareEsperienza(Esperienza esperienzaDaEliminare){
@@ -151,7 +150,6 @@ public class DBManager {
             Statement s = conn.createStatement();
             ResultSet r = s.executeQuery("SELECT * FROM utente WHERE tipo = 'c' " );
             while(r.next()){
-                //TODO CONTROLLARE NOMI TABELLE NEL DB
                 listaCiceroni.add(new Cicerone(r.getString("nome"),r.getString("cognome"),r.getString("email"),r.getString("password"),r.getString("emailassociazione")));
             }
         } catch (SQLException e) {
@@ -166,7 +164,6 @@ public class DBManager {
             Statement s = conn.createStatement();
             ResultSet r = s.executeQuery("SELECT * FROM utente WHERE emailAssociazione = '"+emailAssociazione+"' " );
             while(r.next()){
-                //TODO CONTROLLARE NOMI TABELLE NEL DB
                 listaCiceroni.add(new Cicerone(r.getString("nome"),r.getString("cognome"),r.getString("email"),r.getString("password"),r.getString("emailAssociazione")));
             }
         } catch (SQLException e) {
@@ -176,10 +173,9 @@ public class DBManager {
     }
 
     public static void eliminareCiceroneAssociazione (String emailCicerone){
-        //TODO PER FARE UN UPDATE BISOGNA USARE executeUpdate
         try {
             Statement s = conn.createStatement();
-            ResultSet r = s.executeQuery("UPDATE utente SET emailAssociazione = NULL WHERE email = '"+emailCicerone+"'" );
+            s.executeUpdate("UPDATE utente SET emailAssociazione = null WHERE email = '"+emailCicerone+"'" );
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -188,20 +184,25 @@ public class DBManager {
     public static Date visualizzaDisponibilitaCicerone ( String emailCicerone){
         try {
             Statement s = conn.createStatement();
-            ResultSet r = s.executeQuery("SELECT disponibilità WHERE emailCicerone = '"+emailCicerone+"'" );
-            return r.getDate("data");
+            ResultSet r = s.executeQuery("SELECT data FROM disponibilita WHERE emailCicerone = '"+emailCicerone+"'" );
+            while(r.next()){
+                System.out.println(r.getString("data"));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return new Date(0);
     }
 
-    public static void modoficaDisponibilita ( String emailCicerone, Date nuovaData){
-        //TODO RIVEDERE: LA DATA VA AGGIUNTA, NON AGGIORNATA
+    public static void modificaDisponibilita(String emailCicerone, java.util.Date nuovaData){
         //E POI PER ESEGUIRE UN UPDATE O INSERT VA USATO executeUpdate
         try {
             Statement s = conn.createStatement();
-            ResultSet r = s.executeQuery("UPDATE disponibilita SET data = '"+nuovaData+"' WHERE email = '"+emailCicerone+"'" );
+            //Converto la data nel formato giusto per MySQL
+            String pattern = "yyyy-MM-dd";
+            SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+            String mysqlDate = formatter.format(nuovaData);
+            s.executeUpdate("INSERT INTO disponibilita VALUES ('"+emailCicerone+"','"+mysqlDate+"')" );
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -396,4 +397,38 @@ public class DBManager {
 
         return emailCiceroniDisponibili;
     }
+
+    public static void registraPagamento(Pagamento pagamento) {
+        try{
+            Statement s = conn.createStatement();
+            int id = ThreadLocalRandom.current().nextInt(10000, 500000);//Genera numero casuale
+            s.executeUpdate("INSERT INTO pagamento VALUES("+id+","+pagamento.getImporto()+",'"+pagamento.getTurista().getEmail()+"'," +pagamento.getEsperienza().getId()+")");
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void aggiornaPostiEsperienza(Esperienza esperienza) {
+        try{
+            Statement s = conn.createStatement();
+            s.executeUpdate("UPDATE esperienza SET postiDisponibili="+esperienza.getPostiDisponibili()+" WHERE id="+esperienza.getId());
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void registraPartecipanti(Esperienza esperienza, ArrayList<Partecipante> partecipanti) {
+        try{
+            Statement s = conn.createStatement();
+            for (Partecipante p:
+                 partecipanti) {
+                int id = ThreadLocalRandom.current().nextInt(10000, 500000);//Genera numero casuale
+                s.executeUpdate("INSERT INTO partecipante VALUES("+id+",'"+p.getEmail()+"',"+esperienza.getId()+")");
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
 }

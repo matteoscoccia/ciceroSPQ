@@ -9,7 +9,9 @@ public class Partecipante {
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
-        //TODO INSERIMENTO SUL DATABASE
     }
 
+    public String getEmail() {
+        return email;
+    }
 }

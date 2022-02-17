@@ -14,13 +14,16 @@ public class Assistenza {
                 3) Non so come prenotare un'esperienza
                 4) Altro""");
         Scanner scanner = new Scanner(System.in);
+
         int categoria = scanner.nextInt();
         while(categoria > 4 || categoria < 1){
             System.out.println("Numero non valido. Inserisci [1-2-3-4]:\n");
             categoria = scanner.nextInt();
         }
         System.out.println("Descrivi il tuo problema:\n");
+        scanner = new Scanner(System.in);
         String problema = scanner.nextLine();
+
         System.out.println(
                 "Riepilogo del form:"
                 +"\nCategoria: "+categoria
@@ -28,7 +31,7 @@ public class Assistenza {
                 +"\nVuoi inoltrare la richiesta? [SI/NO]");
         if(scanner.nextLine().equals("SI"))
             inoltraRichiesta(utente.getEmail(), categoria, problema);
-        else if(scanner.nextLine().equals("NO"))
+        else
             System.out.println("Richiesta annullata");
     }
 
