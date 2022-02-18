@@ -75,4 +75,8 @@ public class Associazione extends Utente {
             System.out.println(cicerone.getEmail());
         }
     }
+
+    public void eliminaEsperienza(Esperienza esperienzaDaEliminare){
+        gestoreEsperienze.rimuoviEsperienza(esperienzaDaEliminare);
+    }
 }

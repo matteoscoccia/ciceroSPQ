@@ -45,6 +45,6 @@ public class Utente {
 
 
     public void effettuaRicerca(){
-        gestoreEsperienze.ricercaConFiltri();
+        gestoreEsperienze.ricercaConFiltri(this);
     }
 }

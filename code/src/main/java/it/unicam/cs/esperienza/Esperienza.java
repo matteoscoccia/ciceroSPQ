@@ -20,7 +20,7 @@ public class Esperienza {
     private ArrayList<Partecipante> partecipanti;
     private Toponimo toponimo;
     private ArrayList<Tappa> tappe;
-    private Cicerone guida;
+    public Cicerone guida;
 
     public Esperienza(int id, String titolo, String descrizione, Date data) {
         this.id = id;

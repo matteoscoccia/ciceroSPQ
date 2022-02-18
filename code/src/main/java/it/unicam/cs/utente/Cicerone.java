@@ -63,4 +63,8 @@ public class Cicerone extends Utente {
             System.out.println("Disponibilità aggiunta ");
         }else System.out.println("Disponibilità non modificata");
     }
+
+    public void eliminaEsperienza(Esperienza esperienzaDaEliminare){
+        gestoreEsperienze.rimuoviEsperienza(esperienzaDaEliminare);
+    }
 }

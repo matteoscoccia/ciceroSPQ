@@ -19,6 +19,7 @@ public class DBManager {
     private static Connection conn = null;
 
 
+
     public void setDBManager(String url, String user, String pwd) {
         this.url = url;
         this.user = user;
@@ -137,7 +138,11 @@ public class DBManager {
     public static void eliminareEsperienza(Esperienza esperienzaDaEliminare){
         try {
             Statement s = conn.createStatement();
-            ResultSet r = s.executeQuery("DELETE FROM esperienza WHERE titolo='"+esperienzaDaEliminare.getTitolo()+"' AND descrizione = '"+esperienzaDaEliminare.getDescrizione()+"' " );
+            s.executeUpdate("DELETE FROM esperienza_tag WHERE Esperienzaid="+esperienzaDaEliminare.getId());
+            s.executeUpdate("DELETE FROM pagamento WHERE Esperienzaid = "+esperienzaDaEliminare.getId());
+            s.executeUpdate("DELETE FROM tappa WHERE Esperienzaid="+esperienzaDaEliminare.getId());
+            s.executeUpdate("DELETE FROM esperienza WHERE id="+esperienzaDaEliminare.getId());
+            System.out.println("Esperienza eliminata");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -352,7 +357,7 @@ public class DBManager {
                 e.setPostiDisponibili(postiDisponibili);
                 e.setPosti(postiMinimi, postiMassimi);
                 e.setPrezzo(prezzo);
-
+                e.guida = new Cicerone("","",emailGuida,"","");
                 risultatiRicerca.add(e);
             }
         } catch (SQLException e) {
@@ -386,6 +391,7 @@ public class DBManager {
                 e.setPostiDisponibili(postiDisponibili);
                 e.setPosti(postiMinimi, postiMassimi);
                 e.setPrezzo(prezzo);
+                e.guida = new Cicerone("","",emailGuida,"","");
 
                 risultatiRicerca.add(e);
             }
@@ -473,4 +479,52 @@ public class DBManager {
         }
     }
 
+    public static void visualizzaDettagliEsperienza(Esperienza esperienzaScelta) {
+        try{
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT * FROM esperienza WHERE id="+esperienzaScelta.getId());
+            r.next();
+            System.out.println("-----------------------------------------------");
+            System.out.println("TITOLO: "+r.getString("titolo"));
+            System.out.println("DESCRIZIONE: "+r.getString("descrizione"));
+            System.out.println("DATA: "+r.getDate("data"));
+            System.out.println("POSTI DISPONIBILI: "+ r.getString("postiDisponibili"));
+            System.out.println("POSTI MASSIMI: "+r.getString("postiMassimi"));
+            System.out.println("POSTI MINIMI: "+r.getString("postiMinimi"));
+            System.out.println("PREZZO: " + r.getFloat("prezzo"));
+            System.out.println("EMAIL GUIDA: " + r.getString("emailGuida"));
+            System.out.println("TOPONIMO: " + r.getString("toponimo"));
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void visualizzaTagEsperienza(Esperienza esperienzaScelta) {
+        try{
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT * FROM esperienza_tag WHERE Esperienzaid="+esperienzaScelta.getId());
+            System.out.print("\nTAG: ");
+            while(r.next()){
+                System.out.print(r.getString("Tag")+" ");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void visualizzaElencoTappe(Esperienza esperienzaScelta) {
+        System.out.println("\nELENCO TAPPE:");
+        try{
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT * FROM tappa WHERE Esperienzaid="+esperienzaScelta.getId());
+            while(r.next()){
+                System.out.println(r.getString("nome")+ " - " + r.getString("indirizzo"));
+                System.out.println(r.getString("descrizione"));
+                System.out.println("----------------------------------------------------------------");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 }

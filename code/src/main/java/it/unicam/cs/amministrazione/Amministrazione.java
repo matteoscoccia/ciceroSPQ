@@ -2,6 +2,7 @@ package it.unicam.cs.amministrazione;
 
 import it.unicam.cs.esperienza.Esperienza;
 import it.unicam.cs.utente.GestoreAccount;
+import it.unicam.cs.utente.Utente;
 
 import java.sql.SQLException;
 
@@ -20,10 +21,10 @@ public class Amministrazione {
     }
 
     public void eliminaEsperienza(Esperienza esperienzaDaEliminare){
-        gestoreEsperienze.rimuoviEsperienza(esperienzaDaEliminare,this);
+        gestoreEsperienze.rimuoviEsperienza(esperienzaDaEliminare);
     }
 
     public void effettuaRicerca(){
-        gestoreEsperienze.ricercaConFiltri();
+        gestoreEsperienze.ricercaConFiltri(new Utente("Amministrazione","","",""));
     }
 }

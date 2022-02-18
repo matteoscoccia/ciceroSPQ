@@ -3,9 +3,11 @@ package it.unicam.cs.esperienza;
 import it.unicam.cs.amministrazione.Amministrazione;
 import it.unicam.cs.pagamento.Pagamento;
 import it.unicam.cs.storage.DBManager;
+import it.unicam.cs.utente.Associazione;
+import it.unicam.cs.utente.Cicerone;
 import it.unicam.cs.utente.Turista;
+import it.unicam.cs.utente.Utente;
 
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,7 +48,7 @@ public class GestoreEsperienze {
         do{
             System.out.println("\n Confermare prenotazione? S/N ");
             conferma = inputScanner.nextLine();
-        } while(conferma.equals("S") || conferma.equals("N"));
+        } while(!(conferma.equals("S") || conferma.equals("N")));
         if(conferma.equals("S")){
             Pagamento pagamento = new Pagamento((partecipanti.size() * esperienza.getPrezzo()), turista, esperienza);
             esperienza.setPostiDisponibili(esperienza.getPostiDisponibili()-partecipanti.size());
@@ -224,9 +226,9 @@ public class GestoreEsperienze {
         return listaTagEsperienza;
     }
 
-    public void rimuoviEsperienza(Esperienza esperienzaDaEliminare, Amministrazione amministrazione){
+    public void rimuoviEsperienza(Esperienza esperienzaDaEliminare){
         if( esperienzaDaEliminare.getPostiMassimi()-esperienzaDaEliminare.getPostiDisponibili()!= 0) {
-            System.out.println("Impossibile eliminare esperienza");
+            System.out.println("Impossibile eliminare esperienza: ci sono persone prenotate");
             return;
         }
         String conferma;
@@ -235,7 +237,7 @@ public class GestoreEsperienze {
             conferma = inputScanner.nextLine();
         }while(!(conferma.equals("S") || conferma.equals("N")));
         if(conferma.equals("S")) DBManager.eliminareEsperienza(esperienzaDaEliminare);
-        else System.out.println("Esperienzia non eliminata");
+        else System.out.println("Esperienza non eliminata");
     }
 
     public void condividiEsperienza(Esperienza esperienza){
@@ -249,40 +251,153 @@ public class GestoreEsperienze {
 
 
 
-    public void ricercaConFiltri(){
+    public void ricercaConFiltri(Utente utente){
         String parolaChiave,conferma;
+        ArrayList<Esperienza> risultatiRicerca = new ArrayList<>();
         do {
             System.out.println("Inserire parola chiave da ricercare");
             parolaChiave = inputScanner.nextLine();
-            System.out.println("\n Vuoi ricerca con ricerca con filtri? S/N");
+            System.out.println("\n Vuoi aggiungere dei filtri? S/N");
             conferma = inputScanner.nextLine();
         }while(!(conferma.equals("S") || conferma.equals("N")));
         if(conferma.equals("S")){
             Tag tag = scegliTag(DBManager.listaTag());
             Toponimo toponimo = scegliToponimo(DBManager.listaToponimo());
             Date data = scegliData(DBManager.listaDate());
-            ArrayList<Esperienza> risultatiRicerca = DBManager.ricercaConFiltri(tag,toponimo, data,parolaChiave);
+            risultatiRicerca = DBManager.ricercaConFiltri(tag,toponimo, data,parolaChiave);
+            int count = 0;
 
             for (Esperienza e:
                  risultatiRicerca) {
+                System.out.println("Esperienza n. "+(count+1));
                 System.out.println("TITOLO: " +e.getTitolo());
                 System.out.println("DESCRIZIONE: " +e.getDescrizione());
                 System.out.println("DATA: " +e.getData());
                 System.out.println("PREZZO: " +e.getPrezzo());
                 System.out.println("-------------------------------------------------");
+                count++;
             }
+
+            visualizzaEsperienza(risultatiRicerca, utente);
 
         }else{
-            ArrayList<Esperienza> risultatiRicerca = DBManager.ricercaParolaChiave(parolaChiave);
-
+            risultatiRicerca = DBManager.ricercaParolaChiave(parolaChiave);
+            int count = 0;
             for (Esperienza e:
                     risultatiRicerca) {
+                System.out.println("Esperienza n. "+(count+1));
                 System.out.println("TITOLO: " +e.getTitolo());
                 System.out.println("DESCRIZIONE: " +e.getDescrizione());
                 System.out.println("DATA: " +e.getData());
                 System.out.println("PREZZO: " +e.getPrezzo());
                 System.out.println("-------------------------------------------------");
+                count++;
             }
+
+            if (risultatiRicerca.size()>0) visualizzaEsperienza(risultatiRicerca, utente);
+
+        }
+    }
+
+    private void visualizzaEsperienza(ArrayList<Esperienza> risultatiRicerca, Utente utente) {
+        int scelta;
+        try {
+            do {
+                System.out.println("Quale esperienza vuoi visualizzare? [x = nessuna]");
+                scelta = Integer.parseInt(inputScanner.nextLine()) - 1;
+            }while (scelta<0 || scelta>=risultatiRicerca.size() );
+
+            Esperienza esperienzaScelta = risultatiRicerca.get(scelta);
+            DBManager.visualizzaDettagliEsperienza(esperienzaScelta);
+            DBManager.visualizzaTagEsperienza(esperienzaScelta);
+            DBManager.visualizzaElencoTappe(esperienzaScelta);
+
+            if(utente.getNome().equals("Amministrazione")){
+                Amministrazione amministrazione = new Amministrazione("admin");
+                int selezione = 0;
+                do {
+                    System.out.println("Operazioni disponibili: ");
+                    System.out.println("1) Elimina esperienza");
+                    System.out.println("2) Torna al menu principale");
+                    selezione = Integer.parseInt(inputScanner.nextLine());
+                }while(selezione<1 || selezione>2);
+
+                if(selezione == 1){
+                    amministrazione.eliminaEsperienza(esperienzaScelta);
+                }
+
+            }else if(utente instanceof Cicerone){
+                Cicerone cicerone = (Cicerone) utente;
+                if(esperienzaScelta.guida.getEmail() != null && esperienzaScelta.guida.getEmail().equals(cicerone.getEmail())) {
+                    int selezione = 0;
+                    do {
+                        System.out.println("Operazioni disponibili: ");
+                        System.out.println("1) Elimina esperienza");
+                        System.out.println("2) Modifica esperienza");
+                        System.out.println("3) Torna al menu principale");
+                        selezione = Integer.parseInt(inputScanner.nextLine());
+                    }while(selezione<1 || selezione>3);
+
+                    switch (selezione){
+                        case 1: {
+                                    cicerone.eliminaEsperienza(esperienzaScelta);
+                        }break;
+                        case 2:{
+                            //TODO COLLEGARE AL METODO
+                            System.out.println("CICERONE MODIFICA ESPERIENZA");
+                        }break;
+                    }
+                }else{
+                    System.out.println("Non sei autorizzato ad eliminare o modificare questa esperienza");
+                }
+            }else if(utente instanceof Associazione){
+                Associazione associazione = (Associazione) utente;
+
+                int selezione = 0;
+                do {
+                    System.out.println("Operazioni disponibili: ");
+                    System.out.println("1) Elimina esperienza");
+                    System.out.println("2) Modifica esperienza");
+                    System.out.println("3) Torna al menu principale");
+                    selezione = Integer.parseInt(inputScanner.nextLine());
+                }while(selezione<1 || selezione>3);
+
+                switch (selezione) {
+                    case 1: {
+                        associazione.eliminaEsperienza(esperienzaScelta);
+                    }
+                    break;
+                    case 2: {
+                        //TODO COLLEGARE AL METODO
+                        System.out.println("ASSOCIAZIONE MODIFICA ESPERIENZA");
+                    }
+                    break;
+                }
+            }else if(utente instanceof  Turista){
+                Turista turista = (Turista) utente;
+                int selezione = 0;
+                do {
+                    System.out.println("Operazioni disponibili: ");
+                    System.out.println("1) Condividi esperienza");
+                    System.out.println("2) Prenota esperienza");
+                    System.out.println("3) Torna al menu principale");
+                    selezione = Integer.parseInt(inputScanner.nextLine());
+                }while(selezione<1 || selezione>3);
+
+                switch (selezione) {
+                    case 1: {
+                        condividiEsperienza(esperienzaScelta);
+                    }
+                    break;
+                    case 2: {
+                        turista.prenotaEsperienza(esperienzaScelta);
+                    }
+                    break;
+                }
+            }
+
+        }catch(NumberFormatException e){
+            System.out.println("Nessuna scelta");
         }
     }
 
