@@ -1,12 +1,13 @@
 package it.unicam.cs.utente;
 
-import it.unicam.cs.storage.DBManager;
 import it.unicam.cs.esperienza.Esperienza;
+import it.unicam.cs.storage.DBManager;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 
+import static it.unicam.cs.main.App.gestoreAccount;
 import static it.unicam.cs.main.App.gestoreEsperienze;
 
 public class Cicerone extends Utente {
@@ -67,4 +68,9 @@ public class Cicerone extends Utente {
     public void eliminaEsperienza(Esperienza esperienzaDaEliminare){
         gestoreEsperienze.rimuoviEsperienza(esperienzaDaEliminare);
     }
+
+    public void proporreTag(){
+        gestoreAccount.proponiTag();
+    }
+
 }

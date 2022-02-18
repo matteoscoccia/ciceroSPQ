@@ -7,8 +7,7 @@ import it.unicam.cs.utente.Utente;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import static it.unicam.cs.main.App.gestoreEsperienze;
-import static it.unicam.cs.main.App.gestoreToponimi;
+import static it.unicam.cs.main.App.*;
 
 public class Amministrazione {
 
@@ -40,5 +39,9 @@ public class Amministrazione {
         Scanner scanner = new Scanner(System.in);
         String toponimoDaEliminare = scanner.nextLine();
         gestoreToponimi.eliminaToponimo(toponimoDaEliminare);
+    }
+
+    public void approvaTag(){
+        gestoreAmministazione.approvareTag();
     }
 }

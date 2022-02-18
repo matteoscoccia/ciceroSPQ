@@ -2,8 +2,10 @@ package it.unicam.cs.main;
 
 import it.unicam.cs.amministrazione.Amministrazione;
 import it.unicam.cs.amministrazione.GestoreToponimi;
+import it.unicam.cs.amministrazione.GestoreAmministrazione;
 import it.unicam.cs.assistenza.Assistenza;
 import it.unicam.cs.esperienza.GestoreEsperienze;
+import it.unicam.cs.esperienza.GestoreTag;
 import it.unicam.cs.storage.DBManager;
 import it.unicam.cs.utente.Associazione;
 import it.unicam.cs.utente.Cicerone;
@@ -19,6 +21,8 @@ public class App {
     public static GestoreEsperienze gestoreEsperienze;
     public static GestoreAccount gestoreAccount;
     public static GestoreToponimi gestoreToponimi;
+    public static GestoreAmministrazione gestoreAmministazione;
+    public static GestoreTag gestoreTag;
 
     public static Cicerone cicerone;
     public static Associazione associazione;
@@ -32,7 +36,9 @@ public class App {
         gestoreEsperienze = new GestoreEsperienze();
         gestoreAccount = new GestoreAccount();
         gestoreToponimi = new GestoreToponimi();
+        gestoreAmministazione = new GestoreAmministrazione();
         assistenza = new Assistenza();
+        gestoreTag = new GestoreTag();
         Scanner inputScanner = new Scanner(System.in);
 
         //DB SETUP

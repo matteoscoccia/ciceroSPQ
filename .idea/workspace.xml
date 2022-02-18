@@ -1,11 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="86a34d0b-cda6-43e9-b1ca-14231de98904" name="Changes" comment="modifica package standard" />
+    <list default="true" id="86a34d0b-cda6-43e9-b1ca-14231de98904" name="Changes" comment="modifica package standard">
+      <change afterPath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/amministrazione/GestoreAmministrazione.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/esperienza/GestoreTag.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/amministrazione/Amministrazione.java" beforeDir="false" afterPath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/amministrazione/Amministrazione.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/main/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/main/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/storage/DBManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/storage/DBManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/utente/Cicerone.java" beforeDir="false" afterPath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/utente/Cicerone.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/utente/GestoreAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/utente/GestoreAccount.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -24,11 +43,11 @@
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/code/src/main/java" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.editor" />
   </component>
@@ -69,6 +88,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="modifica package standard" />

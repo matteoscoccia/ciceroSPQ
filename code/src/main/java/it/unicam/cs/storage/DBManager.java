@@ -549,4 +549,46 @@ public class DBManager {
             e.printStackTrace();
         }
     }
+
+    public static boolean controlloTag(Tag tag){
+        try{
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT nome FROM tag WHERE nome = '"+tag.getName()+"' ");
+            return r.next();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static void proponiNuovoTag(Tag tag){
+        try {
+            Statement s = conn.createStatement();
+            s.executeUpdate("INSERT INTO tagDaApprovare VALUES('"+ tag.getName()+"')");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList<Tag> controlloTagApprovare(){
+        ArrayList<Tag> tag = new ArrayList<>();
+        try{
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT * FROM tagDaApprovare");
+            while(r.next()){
+                tag.add(new Tag(r.getString("nome")));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return tag;
+    }
+    public static void aggiungiTag(Tag tag){
+        try {
+            Statement s = conn.createStatement();
+            s.executeUpdate("INSERT INTO tag VALUES('"+ tag.getName()+"')");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 }
