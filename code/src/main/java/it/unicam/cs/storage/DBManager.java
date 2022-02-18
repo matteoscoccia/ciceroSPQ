@@ -292,7 +292,7 @@ public class DBManager {
     }
 
     public static ArrayList<Toponimo> listaToponimo(){
-        ArrayList<Toponimo> listaToponimo = new ArrayList<Toponimo>();
+        ArrayList<Toponimo> listaToponimo = new ArrayList<>();
         try {
             Statement s = conn.createStatement();
             ResultSet r = s.executeQuery("SELECT * FROM toponimo");
@@ -311,7 +311,9 @@ public class DBManager {
             Statement s = conn.createStatement();
             ResultSet r = s.executeQuery("SELECT DISTINCT data FROM esperienza");
             while (r.next()) {
-                listaDate.add(new Date(r.getDate("data").getYear(),r.getDate("data").getMonth(),r.getDate("data").getDay())   );
+                java.sql.Date dataSQL = r.getDate("data");
+                java.util.Date dataJava = new java.util.Date(dataSQL.getTime());
+                listaDate.add(dataJava);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -319,38 +321,78 @@ public class DBManager {
         return listaDate;
     }
 
-    public static void ricercaConFiltri (Tag tag ,Toponimo toponimo , Date data, String parolaChiave){
+    public static ArrayList<Esperienza> ricercaConFiltri (Tag tag , Toponimo toponimo , java.util.Date data, String parolaChiave){
+        ArrayList<Esperienza> risultatiRicerca = new ArrayList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy"); // creo l'oggetto
         try {
+            //Converto la data nel formato giusto per MySQL
+            String pattern = "yyyy-MM-dd";
+            SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+            String mysqlDate = formatter.format(data);
+
             Statement s = conn.createStatement();
-            ResultSet r = s.executeQuery("SELECT * FROM esperienza WHERE titolo LIKE '"+parolaChiave+"' AND tag = '"+tag+"' AND toponimo = '"+toponimo+"' AND data = '"+data+"' ");
+            ResultSet r = s.executeQuery("SELECT * FROM esperienza JOIN esperienza_tag  WHERE id=Esperienzaid AND titolo LIKE '%"+parolaChiave+"%' AND tag = '"+tag.getName()+"' AND toponimo = '"+toponimo.getNome()+"' AND data = '"+mysqlDate+"' ");
+
+            if (!r.isBeforeFirst() ) {
+                System.out.println("Nessuna esperienza corrispondente");
+            }
+
             while (r.next()) {
-                System.out.print("TITOLO" +r.getString("titolo"));
-                System.out.print("DESCRIZIONE" +r.getString("descrizione"));
-                System.out.print("DATA" +r.getString("data"));
-                System.out.print("PREZZO" +r.getString("prezzo"));
-                System.out.print("EMAIL GUIDA" +r.getString("emailGuida"));
-                System.out.println("-------------------------------------------------");
+                int id = r.getInt("id");
+                String titolo = r.getString("titolo");
+                String descrizione = r.getString("descrizione");
+                float prezzo = r.getFloat("prezzo");
+                String emailGuida = r.getString("emailGuida");
+                Date dataEsperienza = r.getDate("data");
+                int postiDisponibili = r.getInt("postiDisponibili");
+                int postiMassimi = r.getInt("postiMassimi");
+                int postiMinimi = r.getInt("postiMinimi");
+
+                Esperienza e = new Esperienza(id, titolo, descrizione, dataEsperienza);
+                e.setPostiDisponibili(postiDisponibili);
+                e.setPosti(postiMinimi, postiMassimi);
+                e.setPrezzo(prezzo);
+
+                risultatiRicerca.add(e);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return risultatiRicerca;
     }
 
-    public static void ricercaParolaChiave ( String parolaChiave){
+    public static ArrayList<Esperienza> ricercaParolaChiave (String parolaChiave){
+        ArrayList<Esperienza> risultatiRicerca = new ArrayList<>();
         try {
             Statement s = conn.createStatement();
-            ResultSet r = s.executeQuery("SELECT * FROM esperienza WHERE titolo LIKE '"+parolaChiave+"'  ");
+            ResultSet r = s.executeQuery("SELECT * FROM esperienza WHERE titolo LIKE '%"+parolaChiave+"%'  ");
+
+            if (!r.isBeforeFirst() ) {
+                System.out.println("Nessuna esperienza corrispondente");
+            }
+
             while (r.next()) {
-                System.out.print("TITOLO" +r.getString("titolo"));
-                System.out.print("DESCRIZIONE" +r.getString("descrizione"));
-                System.out.print("DATA" +r.getString("data"));
-                System.out.print("PREZZO" +r.getString("prezzo"));
-                System.out.print("EMAIL GUIDA" +r.getString("emailGuida"));
-                System.out.println("-------------------------------------------------");
+                int id = r.getInt("id");
+                String titolo = r.getString("titolo");
+                String descrizione = r.getString("descrizione");
+                float prezzo = r.getFloat("prezzo");
+                String emailGuida = r.getString("emailGuida");
+                Date dataEsperienza = r.getDate("data");
+                int postiDisponibili = r.getInt("postiDisponibili");
+                int postiMassimi = r.getInt("postiMassimi");
+                int postiMinimi = r.getInt("postiMinimi");
+
+                Esperienza e = new Esperienza(id, titolo, descrizione, dataEsperienza);
+                e.setPostiDisponibili(postiDisponibili);
+                e.setPosti(postiMinimi, postiMassimi);
+                e.setPrezzo(prezzo);
+
+                risultatiRicerca.add(e);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return risultatiRicerca;
     }
 
 

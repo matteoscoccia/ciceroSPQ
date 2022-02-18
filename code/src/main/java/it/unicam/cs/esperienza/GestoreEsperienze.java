@@ -5,6 +5,7 @@ import it.unicam.cs.pagamento.Pagamento;
 import it.unicam.cs.storage.DBManager;
 import it.unicam.cs.utente.Turista;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -260,16 +261,34 @@ public class GestoreEsperienze {
             Tag tag = scegliTag(DBManager.listaTag());
             Toponimo toponimo = scegliToponimo(DBManager.listaToponimo());
             Date data = scegliData(DBManager.listaDate());
-            DBManager.ricercaConFiltri(tag,toponimo, (java.sql.Date) data,parolaChiave);
+            ArrayList<Esperienza> risultatiRicerca = DBManager.ricercaConFiltri(tag,toponimo, data,parolaChiave);
+
+            for (Esperienza e:
+                 risultatiRicerca) {
+                System.out.println("TITOLO: " +e.getTitolo());
+                System.out.println("DESCRIZIONE: " +e.getDescrizione());
+                System.out.println("DATA: " +e.getData());
+                System.out.println("PREZZO: " +e.getPrezzo());
+                System.out.println("-------------------------------------------------");
+            }
+
         }else{
-            DBManager.ricercaParolaChiave(parolaChiave);
+            ArrayList<Esperienza> risultatiRicerca = DBManager.ricercaParolaChiave(parolaChiave);
+
+            for (Esperienza e:
+                    risultatiRicerca) {
+                System.out.println("TITOLO: " +e.getTitolo());
+                System.out.println("DESCRIZIONE: " +e.getDescrizione());
+                System.out.println("DATA: " +e.getData());
+                System.out.println("PREZZO: " +e.getPrezzo());
+                System.out.println("-------------------------------------------------");
+            }
         }
-
-
     }
+
     private Tag scegliTag(ArrayList<Tag> listaTag){
         for(int i=0;i<listaTag.size();i++){
-            System.out.println("" +i+"|" +listaTag.get(i));
+            System.out.println("" +i+"|" +listaTag.get(i).getName());
         }
         int n;
         do{
@@ -280,22 +299,25 @@ public class GestoreEsperienze {
     }
     private Toponimo scegliToponimo(ArrayList<Toponimo> listaToponimi){
         for(int i=0;i<listaToponimi.size();i++){
-            System.out.println("" +i+"|" +listaToponimi.get(i));
+            System.out.println("" +i+"|" +listaToponimi.get(i).getNome());
         }
         int n;
         do{
-            System.out.println("Inserire numero del tag desiderato");
+            System.out.println("Inserire numero del toponimo desiderato");
             n = Integer.parseInt(inputScanner.nextLine());
         }while(n<0 || n>(listaToponimi.size()-1));
         return listaToponimi.get(n);
     }
+
     private Date scegliData(ArrayList<Date> listaDate){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy"); // creo l'oggetto
+
         for(int i=0;i<listaDate.size();i++){
-            System.out.println("" +i+"|" +listaDate.get(i));
+            System.out.println("" +i+"|" +sdf.format(listaDate.get(i)));
         }
         int n;
         do{
-            System.out.println("Inserire numero del tag desiderato");
+            System.out.println("Inserire numero della data desiderata");
             n = Integer.parseInt(inputScanner.nextLine());
         }while(n<0 || n>(listaDate.size()-1));
         return listaDate.get(n);

@@ -93,8 +93,7 @@ public class App {
 
             switch (sceltaMenu){
                 case 1: {
-                    //TODO COLLEGARE AL METODO RICERCA CON FILTRI
-                    System.out.println("Hai selezionato ricerca con filtri");
+                    amministrazione.effettuaRicerca();
                 }break;
                 case 2:{
                     //TODO COLLEGARE AL METODO DEFINISCI TAG
@@ -139,14 +138,12 @@ public class App {
 
             switch (sceltaMenu){
                 case 1: {
-                    //TODO COLLEGARE AL METODO RICERCA CON FILTRI
-                    System.out.println("Hai selezionato ricerca con filtri");
+                    turista.effettuaRicerca();
                 }break;
                 case 2:{
                     turista.visualizzaProfilo();
                 }break;
                 case 3:{
-                    System.out.println("Hai selezionato contatta assistenza");
                     turista.contattaAssistenza();
                 }
             }
@@ -173,8 +170,7 @@ public class App {
 
             switch (sceltaMenu){
                 case 1: {
-                    //TODO COLLEGARE AL METODO RICERCA CON FILTRI
-                    System.out.println("Hai selezionato ricerca con filtri");
+                    associazione.effettuaRicerca();
                 }break;
                 case 2:{
                     associazione.visualizzaProfilo();
@@ -222,8 +218,7 @@ public class App {
 
             switch (sceltaMenu){
                 case 1: {
-                    //TODO COLLEGARE AL METODO RICERCA CON FILTRI
-                    System.out.println("Hai selezionato ricerca con filtri");
+                    cicerone.effettuaRicerca();
                 }break;
                 case 2:{
                     cicerone.visualizzaProfilo();

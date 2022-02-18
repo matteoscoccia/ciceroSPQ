@@ -22,4 +22,8 @@ public class Amministrazione {
     public void eliminaEsperienza(Esperienza esperienzaDaEliminare){
         gestoreEsperienze.rimuoviEsperienza(esperienzaDaEliminare,this);
     }
+
+    public void effettuaRicerca(){
+        gestoreEsperienze.ricercaConFiltri();
+    }
 }
