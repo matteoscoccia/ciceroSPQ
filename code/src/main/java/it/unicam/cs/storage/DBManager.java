@@ -18,8 +18,6 @@ public class DBManager {
     private String pwd;
     private static Connection conn = null;
 
-
-
     public void setDBManager(String url, String user, String pwd) {
         this.url = url;
         this.user = user;
@@ -477,6 +475,30 @@ public class DBManager {
         }catch(SQLException e){
             e.printStackTrace();
         }
+    }
+
+    public static void registraToponimo(String toponimoFiglio, String toponimoGenitore) throws SQLException {
+        Statement s = conn.createStatement();
+        s.executeUpdate("INSERT INTO toponimo VALUES("+toponimoFiglio+",'"+toponimoGenitore+"')");
+    }
+
+    public static boolean controllaEsistenzaToponimo(String nomeToponimo) throws SQLException {
+        Statement s = conn.createStatement();
+        ResultSet r = s.executeQuery("SELECT * FROM toponimi WHERE nome = '"+nomeToponimo+"'");
+        return r.next();
+    }
+
+    public static void eliminaToponimo(String toponimoDaEliminare) throws SQLException{
+        Statement s = conn.createStatement();
+        s.executeUpdate("DELETE FROM toponimo WHERE nome ='"+toponimoDaEliminare+"'");
+    }
+
+    public static boolean controllaEsistenzaFigli(String toponimoDaControllare) throws SQLException {
+        // todo: finire implementazione query che controlla se ci sono colonne "Genitore" che contengono la variabile
+        //  toponimoDaControllare nella tabella dei toponimi. Se c'è almeno una riga allora ritorna true, false altrimenti
+        Statement s = conn.createStatement();
+        ResultSet r = s.executeQuery("");
+        return false;
     }
 
     public static void visualizzaDettagliEsperienza(Esperienza esperienzaScelta) {

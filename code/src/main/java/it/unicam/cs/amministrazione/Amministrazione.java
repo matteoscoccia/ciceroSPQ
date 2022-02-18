@@ -5,8 +5,10 @@ import it.unicam.cs.utente.GestoreAccount;
 import it.unicam.cs.utente.Utente;
 
 import java.sql.SQLException;
+import java.util.Scanner;
 
 import static it.unicam.cs.main.App.gestoreEsperienze;
+import static it.unicam.cs.main.App.gestoreToponimi;
 
 public class Amministrazione {
 
@@ -20,11 +22,23 @@ public class Amministrazione {
         GestoreAccount.adminEliminaAccount();
     }
 
+    //todo correggere
     public void eliminaEsperienza(Esperienza esperienzaDaEliminare){
         gestoreEsperienze.rimuoviEsperienza(esperienzaDaEliminare);
     }
 
     public void effettuaRicerca(){
         gestoreEsperienze.ricercaConFiltri(new Utente("Amministrazione","","",""));
+    }
+
+    public void aggiungiToponimo() throws SQLException {
+        gestoreToponimi.registraToponimo();
+    }
+
+    public void eliminaToponimo() throws SQLException{
+        System.out.println("Specificare il nome del toponimo da eliminare");
+        Scanner scanner = new Scanner(System.in);
+        String toponimoDaEliminare = scanner.nextLine();
+        gestoreToponimi.eliminaToponimo(toponimoDaEliminare);
     }
 }

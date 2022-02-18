@@ -1,6 +1,7 @@
 package it.unicam.cs.main;
 
 import it.unicam.cs.amministrazione.Amministrazione;
+import it.unicam.cs.amministrazione.GestoreToponimi;
 import it.unicam.cs.assistenza.Assistenza;
 import it.unicam.cs.esperienza.GestoreEsperienze;
 import it.unicam.cs.storage.DBManager;
@@ -17,6 +18,7 @@ public class App {
 
     public static GestoreEsperienze gestoreEsperienze;
     public static GestoreAccount gestoreAccount;
+    public static GestoreToponimi gestoreToponimi;
 
     public static Cicerone cicerone;
     public static Associazione associazione;
@@ -25,10 +27,11 @@ public class App {
     public static Assistenza assistenza;
 
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws SQLException {
         //SETUP
         gestoreEsperienze = new GestoreEsperienze();
         gestoreAccount = new GestoreAccount();
+        gestoreToponimi = new GestoreToponimi();
         assistenza = new Assistenza();
         Scanner inputScanner = new Scanner(System.in);
 
@@ -75,7 +78,7 @@ public class App {
         dbManager.close();
     }
 
-    private static void visualizzaMenuAmministrazione() {
+    private static void visualizzaMenuAmministrazione() throws SQLException {
         int sceltaMenu = -1;
         Scanner inputScanner = new Scanner(System.in);
         do{
@@ -104,12 +107,10 @@ public class App {
                     System.out.println("Hai selezionato approva Tag");
                 }break;
                 case 4:{
-                    //TODO COLLEGARE AL METODO AGGIUNGI TOPONIMO
-                    System.out.println("Hai selezionato aggiungi Toponimo");
+                    amministrazione.aggiungiToponimo();
                 }break;
                 case 5:{
-                    //TODO COLLEGARE AL METODO ELIMINA TOPONIMO
-                    System.out.println("Hai selezionato elimina Toponimo");
+                    amministrazione.eliminaToponimo();
                 }break;
                 case 6:{
                     try {
