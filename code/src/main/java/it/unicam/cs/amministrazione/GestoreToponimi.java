@@ -25,18 +25,22 @@ public class GestoreToponimi {
         if(gestoreToponimi.controllaEsistenzaToponimo(nomeToponimoGenitore)){
             System.out.println("Inserire il nome del toponimo da aggiungere");
             String nomeToponimoDaAggiungere = scanner.nextLine();
-            System.out.println("Confermi di voler aggiungere il toponimo "+nomeToponimoDaAggiungere+"con genitore "+nomeToponimoGenitore+"? [SI/NO]");
-            if(scanner.nextLine().equals("SI")) DBManager.registraToponimo(nomeToponimoDaAggiungere, nomeToponimoGenitore);
-            else System.out.println("Inserimento annullato");
+            System.out.println("Confermi di voler aggiungere il toponimo "+nomeToponimoDaAggiungere+" con genitore "+nomeToponimoGenitore+"? [S/N]");
+            if(scanner.nextLine().equals("S")) {
+                if(!controllaEsistenzaToponimo(nomeToponimoDaAggiungere)) {
+                    DBManager.registraToponimo(nomeToponimoDaAggiungere, nomeToponimoGenitore);
+                    System.out.println("Toponimo '"+nomeToponimoDaAggiungere+"' inserito");
+                }else System.out.println("Toponimo già esistente");
+            }else System.out.println("Inserimento annullato");
         } else System.out.println("Genitore non esistente");
     }
 
     public void eliminaToponimo(String toponimoDaEliminare) throws SQLException{
         if(this.controllaEsistenzaToponimo(toponimoDaEliminare)){
-            if(this.controllaEsistenzaFigli(toponimoDaEliminare)){
-                System.out.println("Confermi di voler eliminare il toponimo '"+toponimoDaEliminare+"'? [SI/NO]");
+            if(!this.controllaEsistenzaFigli(toponimoDaEliminare)){
+                System.out.println("Confermi di voler eliminare il toponimo '"+toponimoDaEliminare+"'? [S/N]");
                 Scanner scanner = new Scanner(System.in);
-                if(scanner.nextLine().equals("SI")){
+                if(scanner.nextLine().equals("S")){
                     DBManager.eliminaToponimo(toponimoDaEliminare);
                     System.out.println("Toponimo '"+toponimoDaEliminare+"' eliminato");
                 } else System.out.println("Toponimo non eliminato");

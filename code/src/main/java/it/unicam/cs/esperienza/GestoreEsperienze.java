@@ -343,8 +343,7 @@ public class GestoreEsperienze {
                                     cicerone.eliminaEsperienza(esperienzaScelta);
                         }break;
                         case 2:{
-                            //TODO COLLEGARE AL METODO
-                            System.out.println("CICERONE MODIFICA ESPERIENZA");
+                            modificaEsperienza(esperienzaScelta);
                         }break;
                     }
                 }else{
@@ -368,8 +367,7 @@ public class GestoreEsperienze {
                     }
                     break;
                     case 2: {
-                        //TODO COLLEGARE AL METODO
-                        System.out.println("ASSOCIAZIONE MODIFICA ESPERIENZA");
+                        modificaEsperienza(esperienzaScelta);
                     }
                     break;
                 }
@@ -436,5 +434,133 @@ public class GestoreEsperienze {
             n = Integer.parseInt(inputScanner.nextLine());
         }while(n<0 || n>(listaDate.size()-1));
         return listaDate.get(n);
+    }
+
+    private void modificaEsperienza(Esperienza esperienzaDaModificare){
+        System.out.println("-------------------------------------");
+        System.out.println("Modifiche disponibili: ");
+        System.out.println("1) Modifica titolo");
+        System.out.println("2) Modifica descrizione");
+        System.out.println("3) Modifica data");
+        System.out.println("4) Modifica prezzo");
+        System.out.println("5) Aggiungi Tag");
+        System.out.println("6) Elimina Tag");
+        System.out.println("7) Aggiungi Tappa");
+        System.out.println("8) Elimina Tappa");
+        System.out.println("0) Torna al menu principali");
+        int scelta = 0;
+        try{
+            scelta = Integer.parseInt(inputScanner.nextLine());
+        }catch (NumberFormatException e){
+            System.out.println("Nessuna scelta");
+            return;
+        }
+        switch (scelta){
+            case 1: {modificaTitolo(esperienzaDaModificare);
+            }break;
+            case 2:{modificaDescrizione(esperienzaDaModificare);
+            }break;
+            case 3:{modificaData(esperienzaDaModificare);
+            }break;
+            case 4:{modificaPrezzo(esperienzaDaModificare);
+            }break;
+            case 5:{//TODO MODIFICA
+                //A
+            }break;
+            case 6:{//TODO MODIFICA
+                //B
+            }break;
+            case 7:{//TODO MODIFICA
+                //C
+            }break;
+            case 8:{//TODO MODIFICAA
+
+            }break;
+        }
+    }
+
+
+    private void modificaTitolo(Esperienza esperienzaDaModificare) {
+
+        System.out.println("Inserisci nuovo titolo: ");
+        String nuovoTitolo = inputScanner.nextLine();
+        String conferma;
+        do{
+            System.out.println("Vuoi confermare '" + nuovoTitolo + "'?[S/N]");
+            conferma = inputScanner.nextLine();
+        }while (!(conferma.equals("S") || conferma.equals("N")));
+
+        if(conferma.equals("S")){
+            DBManager.modificaTitoloEsperienza(esperienzaDaModificare, nuovoTitolo);
+            System.out.println("Titolo Modificato");
+        }else{
+            System.out.println("Titolo non modificato");
+        }
+
+    }
+
+    private void modificaDescrizione(Esperienza esperienzaDaModificare) {
+        System.out.println("Inserisci nuova descrizione: ");
+        String nuovaDescrizione = inputScanner.nextLine();
+        String conferma;
+        do{
+            System.out.println("Vuoi confermare '" + nuovaDescrizione + "'?[S/N]");
+            conferma = inputScanner.nextLine();
+        }while (!(conferma.equals("S") || conferma.equals("N")));
+
+        if(conferma.equals("S")){
+            DBManager.modificaDescrizioneEsperienza(esperienzaDaModificare, nuovaDescrizione);
+            System.out.println("Descrizione modificata");
+        }else{
+            System.out.println("Descrizione non modificata");
+        }
+    }
+
+    private void modificaData(Esperienza esperienzaDaModificare) {
+
+        System.out.println("Inserisci nuova data: ");
+        System.out.println("Nuovo giorno: ");
+        int giorno = Integer.parseInt(inputScanner.nextLine());
+        System.out.println("Nuovo mese: ");
+        int mese = Integer.parseInt(inputScanner.nextLine());
+        System.out.println("Nuovo anno: ");
+        int anno = Integer.parseInt(inputScanner.nextLine());
+        Date nuovaData = new Date(anno-1900, mese-1, giorno);
+        String conferma;
+        do{
+            System.out.println("Vuoi confermare '" + nuovaData + "'?[S/N]");
+            conferma = inputScanner.nextLine();
+        }while (!(conferma.equals("S") || conferma.equals("N")));
+
+        if(conferma.equals("S")){
+            DBManager.modificaDataEsperienza(esperienzaDaModificare, nuovaData);
+            System.out.println("Data modificata");
+        }else{
+            System.out.println("Data non modificata");
+        }
+    }
+
+    private void modificaPrezzo(Esperienza esperienzaDaModificare) {
+        System.out.println("Inserisci nuovo prezzo: ");
+        float nuovoPrezzo;
+        try{
+            nuovoPrezzo = Float.parseFloat(inputScanner.nextLine());
+        }catch (NumberFormatException e){
+            System.out.println("Impossibile modificare");
+            return;
+        }
+        String conferma;
+        do{
+            System.out.println("Vuoi confermare '" + nuovoPrezzo + "'?[S/N]");
+            conferma = inputScanner.nextLine();
+        }while (!(conferma.equals("S") || conferma.equals("N")));
+
+        if(conferma.equals("S")){
+            DBManager.modificaPrezzoEsperienza(esperienzaDaModificare, nuovoPrezzo);
+            System.out.println("Prezzo modificato");
+        }else{
+            System.out.println("Prezzo non modificato");
+        }
+
     }
 }

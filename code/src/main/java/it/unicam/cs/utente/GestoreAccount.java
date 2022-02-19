@@ -1,7 +1,5 @@
 package it.unicam.cs.utente;
 
-import it.unicam.cs.esperienza.GestoreTag;
-import it.unicam.cs.esperienza.Tag;
 import it.unicam.cs.storage.DBManager;
 
 import java.sql.SQLException;
@@ -98,25 +96,4 @@ public class GestoreAccount {
         return false;
     }
 
-    public void proponiTag(){
-        Scanner input = new Scanner(System.in);
-        System.out.println("Inserire il tag che si vuole proporre");
-        String conferma;
-        String nomeTag = input.nextLine();
-        Tag tag = new Tag(nomeTag);
-        GestoreTag gestoreTag = new GestoreTag();
-        if(gestoreTag.controlloTag(tag)){
-            do {
-                System.out.println("Confermare il tag S/N " + tag.getName());
-                conferma = input.nextLine();
-            }while(!(conferma.equals("S") || conferma.equals("N")));
-            if(conferma.equals("S")){
-                gestoreTag.proponiNuovoTag(tag);
-                System.out.println("TAG IN ATTESA DI APPROVAZIONE ");
-            }
-        }else{
-            System.out.println("Tag già presente ");
-        }
-
-    }
 }

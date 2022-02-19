@@ -1,8 +1,10 @@
 package it.unicam.cs.amministrazione;
 
 import it.unicam.cs.esperienza.Tag;
+import it.unicam.cs.storage.DBManager;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class GestoreTag {
 
@@ -11,22 +13,45 @@ public class GestoreTag {
      * @param tagDaControllare tag da controllare
      * @return true se il tag è gia registrato, false altrimenti
      */
-    public boolean controlloTag(String tagDaControllare){
-        //todo implements
-        return false;
+    public static boolean controlloTag(Tag tagDaControllare){
+        return DBManager.controlloTag(tagDaControllare);
     }
 
-    public void aggiungiNuovoTag(String nomeTag){
-        //todo
+    public static void aggiungiNuovoTag(Tag tag){
+        DBManager.aggiungiTag(tag);
     }
 
-    public ArrayList<Tag> getTagDaApprovare(){
-        //todo implements
-        return null;
+    public static void rimuoviTagDaApprovare(Tag tag){
+        DBManager.rimuoviTagDaApprovare(tag);
     }
 
-    public void proponiNuovoTag(String tagDaProporre){
-        //todo implements
+    public static ArrayList<Tag> getTagDaApprovare(){
+        return DBManager.controlloTagApprovare();
+    }
+
+    public static void proponiNuovoTag(Tag tagDaProporre){
+        DBManager.proponiNuovoTag(tagDaProporre);
+    }
+
+    public static void proponiTag(){
+        Scanner input = new Scanner(System.in);
+        System.out.println("Inserire il tag che si vuole proporre");
+        String conferma;
+        String nomeTag = input.nextLine();
+        Tag tag = new Tag(nomeTag);
+        if(!controlloTag(tag)){
+            do {
+                System.out.println("Confermare il tag S/N " + tag.getName());
+                conferma = input.nextLine();
+            }while(!(conferma.equals("S") || conferma.equals("N")));
+            if(conferma.equals("S")){
+                proponiNuovoTag(tag);
+                System.out.println("TAG IN ATTESA DI APPROVAZIONE ");
+            }
+        }else{
+            System.out.println("Tag già presente ");
+        }
+
     }
 
 }

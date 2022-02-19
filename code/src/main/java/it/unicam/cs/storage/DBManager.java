@@ -5,6 +5,7 @@ import it.unicam.cs.pagamento.Pagamento;
 import it.unicam.cs.utente.Associazione;
 import it.unicam.cs.utente.Cicerone;
 
+import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class DBManager {
     private String user;
     private String pwd;
     private static Connection conn = null;
+
 
     public void setDBManager(String url, String user, String pwd) {
         this.url = url;
@@ -479,12 +481,12 @@ public class DBManager {
 
     public static void registraToponimo(String toponimoFiglio, String toponimoGenitore) throws SQLException {
         Statement s = conn.createStatement();
-        s.executeUpdate("INSERT INTO toponimo VALUES("+toponimoFiglio+",'"+toponimoGenitore+"')");
+        s.executeUpdate("INSERT INTO toponimo VALUES('"+toponimoFiglio+"','"+toponimoGenitore+"')");
     }
 
     public static boolean controllaEsistenzaToponimo(String nomeToponimo) throws SQLException {
         Statement s = conn.createStatement();
-        ResultSet r = s.executeQuery("SELECT * FROM toponimi WHERE nome = '"+nomeToponimo+"'");
+        ResultSet r = s.executeQuery("SELECT * FROM toponimo WHERE nome = '"+nomeToponimo+"'");
         return r.next();
     }
 
@@ -494,11 +496,9 @@ public class DBManager {
     }
 
     public static boolean controllaEsistenzaFigli(String toponimoDaControllare) throws SQLException {
-        // todo: finire implementazione query che controlla se ci sono colonne "Genitore" che contengono la variabile
-        //  toponimoDaControllare nella tabella dei toponimi. Se c'è almeno una riga allora ritorna true, false altrimenti
         Statement s = conn.createStatement();
-        ResultSet r = s.executeQuery("");
-        return false;
+        ResultSet r = s.executeQuery("SELECT * FROM toponimo WHERE Genitore='"+toponimoDaControllare+"'");
+        return r.next();
     }
 
     public static void visualizzaDettagliEsperienza(Esperienza esperienzaScelta) {
@@ -591,4 +591,56 @@ public class DBManager {
             e.printStackTrace();
         }
     }
+
+    public static void rimuoviTagDaApprovare(Tag tag){
+        try{
+            Statement s = conn.createStatement();
+            s.executeUpdate("DELETE FROM tagDaApprovare WHERE nome='"+tag.getName()+"'");
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void modificaTitoloEsperienza(Esperienza esperienzaDaModificare, String nuovoTitolo) {
+        try{
+            Statement s = conn.createStatement();
+            s.executeUpdate("UPDATE esperienza SET titolo='"+nuovoTitolo+"' WHERE id="+esperienzaDaModificare.getId());
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void modificaDescrizioneEsperienza(Esperienza esperienzaDaModificare, String nuovaDescrizione) {
+        try{
+            Statement s = conn.createStatement();
+            s.executeUpdate("UPDATE esperienza SET descrizione='"+nuovaDescrizione+"' WHERE id="+esperienzaDaModificare.getId());
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void modificaDataEsperienza(Esperienza esperienzaDaModificare, java.util.Date nuovaData) {
+        try{
+            //Converto la data nel formato giusto per MySQL
+            String pattern = "yyyy-MM-dd";
+            SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+            String mysqlDate = formatter.format(nuovaData);
+
+            Statement s = conn.createStatement();
+            s.executeUpdate("UPDATE esperienza SET data='"+mysqlDate+"' WHERE id="+esperienzaDaModificare.getId());
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void modificaPrezzoEsperienza(Esperienza esperienzaDaModificare, float nuovoPrezzo) {
+        try{
+            Statement s = conn.createStatement();
+            s.executeUpdate("UPDATE esperienza SET prezzo="+nuovoPrezzo+" WHERE id="+esperienzaDaModificare.getId());
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -1,5 +1,6 @@
 package it.unicam.cs.utente;
 
+import it.unicam.cs.amministrazione.GestoreTag;
 import it.unicam.cs.esperienza.Esperienza;
 import it.unicam.cs.storage.DBManager;
 
@@ -70,7 +71,7 @@ public class Cicerone extends Utente {
     }
 
     public void proporreTag(){
-        gestoreAccount.proponiTag();
+        GestoreTag.proponiTag();
     }
 
 }

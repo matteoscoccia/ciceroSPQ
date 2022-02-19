@@ -1,5 +1,6 @@
 package it.unicam.cs.utente;
 
+import it.unicam.cs.amministrazione.GestoreTag;
 import it.unicam.cs.storage.DBManager;
 import it.unicam.cs.esperienza.Esperienza;
 
@@ -78,5 +79,9 @@ public class Associazione extends Utente {
 
     public void eliminaEsperienza(Esperienza esperienzaDaEliminare){
         gestoreEsperienze.rimuoviEsperienza(esperienzaDaEliminare);
+    }
+
+    public void proporreTag(){
+        GestoreTag.proponiTag();
     }
 }

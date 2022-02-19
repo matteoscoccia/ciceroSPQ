@@ -1,11 +1,10 @@
 package it.unicam.cs.main;
 
 import it.unicam.cs.amministrazione.Amministrazione;
+import it.unicam.cs.amministrazione.GestoreTag;
 import it.unicam.cs.amministrazione.GestoreToponimi;
-import it.unicam.cs.amministrazione.GestoreAmministrazione;
 import it.unicam.cs.assistenza.Assistenza;
 import it.unicam.cs.esperienza.GestoreEsperienze;
-import it.unicam.cs.esperienza.GestoreTag;
 import it.unicam.cs.storage.DBManager;
 import it.unicam.cs.utente.Associazione;
 import it.unicam.cs.utente.Cicerone;
@@ -21,7 +20,6 @@ public class App {
     public static GestoreEsperienze gestoreEsperienze;
     public static GestoreAccount gestoreAccount;
     public static GestoreToponimi gestoreToponimi;
-    public static GestoreAmministrazione gestoreAmministazione;
     public static GestoreTag gestoreTag;
 
     public static Cicerone cicerone;
@@ -36,7 +34,6 @@ public class App {
         gestoreEsperienze = new GestoreEsperienze();
         gestoreAccount = new GestoreAccount();
         gestoreToponimi = new GestoreToponimi();
-        gestoreAmministazione = new GestoreAmministrazione();
         assistenza = new Assistenza();
         gestoreTag = new GestoreTag();
         Scanner inputScanner = new Scanner(System.in);
@@ -105,12 +102,10 @@ public class App {
                     amministrazione.effettuaRicerca();
                 }break;
                 case 2:{
-                    //TODO COLLEGARE AL METODO DEFINISCI TAG
-                    System.out.println("Hai selezionato definisci Tag");
+                    amministrazione.definireTag();
                 }break;
                 case 3:{
-                    //TODO COLLEGARE AL METODO APPROVA TAG
-                    System.out.println("Hai selezionato approva Tag");
+                    amministrazione.approvareTag();
                 }break;
                 case 4:{
                     amministrazione.aggiungiToponimo();
@@ -199,8 +194,7 @@ public class App {
                     associazione.rimuoviCicerone();
                 }break;
                 case 7:{
-                    //TODO COLLEGARE AL METODO PROPONI TAG
-                    System.out.println("Hai selezionato proponi Tag");
+                    associazione.proporreTag();
                 }
             }
         }while(sceltaMenu!=0);
@@ -240,8 +234,7 @@ public class App {
                     cicerone.modificaDisponibilita();
                 }break;
                 case 6:{
-                    //TODO COLLEGARE AL METODO PROPONI TAG
-                    System.out.println("Hai selezionato proponi tag");
+                    cicerone.proporreTag();
                 }break;
             }
         }while(sceltaMenu!=0);
