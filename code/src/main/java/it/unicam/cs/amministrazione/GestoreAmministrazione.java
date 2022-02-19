@@ -38,4 +38,27 @@ public class GestoreAmministrazione {
             }while(choice!=0);
         }
     }
+
+    public void definireTag(){
+        String conferma,tag;
+        do{
+            System.out.println("Inserire il nome del nuovo tag che si vuole definire");
+            tag= input.nextLine();
+            System.out.println("Confermare tag S/N");
+            conferma = input.nextLine();
+        }while(!(conferma.equals("S") || conferma.equals("N")));
+        if(conferma.equals("S")){
+            Tag tagDaDefinire = new Tag(tag);
+            if(!DBManager.controlloTag(tagDaDefinire)){
+                DBManager.aggiungiTag(tagDaDefinire);
+                System.out.println("TAG definito correttamente");
+            }else{
+                System.out.println("Tag già presente");
+            }
+
+        }else{
+            System.out.println("Definizione tag annullata");
+        }
+
+    }
 }

@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="86a34d0b-cda6-43e9-b1ca-14231de98904" name="Changes" comment="modifica package standard">
-      <change afterPath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/amministrazione/GestoreAmministrazione.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/esperienza/GestoreTag.java" afterDir="false" />
+    <list default="true" id="86a34d0b-cda6-43e9-b1ca-14231de98904" name="Changes" comment="implementazione casi d'uso approvareTag e ProporreTag">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/amministrazione/Amministrazione.java" beforeDir="false" afterPath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/amministrazione/Amministrazione.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/main/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/main/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/storage/DBManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/storage/DBManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/utente/Cicerone.java" beforeDir="false" afterPath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/utente/Cicerone.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/utente/GestoreAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/utente/GestoreAccount.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/amministrazione/GestoreAmministrazione.java" beforeDir="false" afterPath="$PROJECT_DIR$/code/src/main/java/it/unicam/cs/amministrazione/GestoreAmministrazione.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +67,14 @@
       <option name="project" value="LOCAL" />
       <updated>1643281556731</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="implementazione casi d'uso approvareTag e ProporreTag">
+      <created>1645226489347</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1645226489347</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -92,6 +94,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="modifica package standard" />
-    <option name="LAST_COMMIT_MESSAGE" value="modifica package standard" />
+    <MESSAGE value="implementazione casi d'uso approvareTag e ProporreTag" />
+    <option name="LAST_COMMIT_MESSAGE" value="implementazione casi d'uso approvareTag e ProporreTag" />
   </component>
 </project>

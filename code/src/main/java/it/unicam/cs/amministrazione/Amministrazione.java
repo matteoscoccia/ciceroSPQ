@@ -44,4 +44,8 @@ public class Amministrazione {
     public void approvaTag(){
         gestoreAmministazione.approvareTag();
     }
+
+    public void definireTag(){
+        gestoreAmministazione.definireTag();
+    }
 }
