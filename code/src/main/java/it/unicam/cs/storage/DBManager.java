@@ -643,4 +643,75 @@ public class DBManager {
         }
     }
 
+    public static ArrayList<Tag> getTagEsperienza(Esperienza esperienzaDaModificare) {
+        ArrayList<Tag> listaTag = new ArrayList<>();
+        try {
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT * FROM esperienza_tag WHERE Esperienzaid=" +esperienzaDaModificare.getId());
+            while(r.next()){
+                listaTag.add(new Tag (r.getString("Tag")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaTag;
+    }
+
+    public static void aggiungiTagEsperienza(Esperienza esperienzaDaModificare, Tag tag) {
+        try{
+            Statement s = conn.createStatement();
+            s.executeUpdate("INSERT INTO esperienza_tag VALUES ("+esperienzaDaModificare.getId()+",'"+tag.getName()+"','')");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void eliminaTagEsperienza(Esperienza esperienzaDaModificare, Tag tag) {
+        try{
+            Statement s = conn.createStatement();
+            s.executeUpdate("DELETE FROM esperienza_tag WHERE Esperienzaid="+esperienzaDaModificare.getId()+" AND Tag='"+tag.getName()+"'");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public static void aggiungiTappaEsperienza(Esperienza esperienzaDaModificare, Tappa tappaDaAggiungere) {
+        try{
+            Statement s = conn.createStatement();
+            String nome = tappaDaAggiungere.getNome();
+            String descrizione = tappaDaAggiungere.getDescrizione();
+            String indirizzo = tappaDaAggiungere.getIndirizzo();
+
+            s.executeUpdate("INSERT INTO tappa VALUES('"+nome+"','"+descrizione+"','"+indirizzo+"',"+esperienzaDaModificare.getId()+")");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+
+    public static ArrayList<Tappa> getTappeEsperienza(Esperienza esperienzaDaModificare) {
+        ArrayList<Tappa> listaTappe = new ArrayList<>();
+        try {
+            Statement s = conn.createStatement();
+            ResultSet r = s.executeQuery("SELECT * FROM tappa WHERE Esperienzaid=" +esperienzaDaModificare.getId());
+            while(r.next()){
+                listaTappe.add(new Tappa (r.getString("nome"),r.getString("descrizione"),r.getString("indirizzo")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaTappe;
+    }
+
+
+    public static void eliminaTappaEsperienza(Esperienza esperienzaDaModificare, Tappa tappaDaEliminare) {
+        try{
+            Statement s = conn.createStatement();
+            s.executeUpdate("DELETE FROM tappa WHERE Esperienzaid="+esperienzaDaModificare.getId()+" AND nome='"+tappaDaEliminare.getNome()+"'");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 }

@@ -53,7 +53,6 @@ public class GestoreEsperienze {
             Pagamento pagamento = new Pagamento((partecipanti.size() * esperienza.getPrezzo()), turista, esperienza);
             esperienza.setPostiDisponibili(esperienza.getPostiDisponibili()-partecipanti.size());
             System.out.println("\n PAGAMENTO IN CORSO ...");
-            //TODO CONTROLLARE CHE L'INTERAZIONE COL DB FUNZIONI
             DBManager.registraPagamento(pagamento);
             DBManager.aggiornaPostiEsperienza(esperienza);
             DBManager.registraPartecipanti(esperienza, partecipanti);
@@ -73,9 +72,6 @@ public class GestoreEsperienze {
         System.out.println("\n-------------------------------------------------------------------");
     }
 
-    public void creaRiepilogo(Esperienza esperienza, String titolo, String descrizione, int prezzo){
-        // TODO (titolo, descrizione e prezzo non servono se si prendono i dati di esperienza dal DB)
-    }
 
     public Esperienza aggiungiEsperienza(){
         System.out.println("\nTitolo esperienza: ");
@@ -128,7 +124,7 @@ public class GestoreEsperienze {
                 DBManager.registraEsperienza(nuovaEsperienza);
                 DBManager.registraTappe(nuovaEsperienza, tappeEsperienza);
                 DBManager.registraTag(nuovaEsperienza, tagEsperienza);
-            } catch(Exception e){System.out.println(e);}
+            } catch(Exception e){e.printStackTrace();}
             return nuovaEsperienza;
         }else {
             System.out.println("Esperienza non creata");
@@ -137,13 +133,12 @@ public class GestoreEsperienze {
     }
 
     private Toponimo visualizzaElencoToponimi() {
-        //TODO funziona ma andrebbe gestito se un toponimo non ha figli (magari stampare solamente se stesso)
         String genitore = "Italia";
         boolean hasChosen = false;
 
         while(!hasChosen) {
             try {
-                ArrayList<String> elencoToponimiDisponibili = new ArrayList<>();
+                ArrayList<String> elencoToponimiDisponibili;
                 elencoToponimiDisponibili = DBManager.selezionaToponimiFigli(genitore);
                 System.out.println("\nToponimi collegati a " + genitore + ":");
                 int count = 1;
@@ -167,7 +162,7 @@ public class GestoreEsperienze {
                     genitore = elencoToponimiDisponibili.get(toponimoScelto); //Inserisco il nuovo toponimo di cui cercare i figli
                 }
             } catch (Exception e) {
-                System.out.println(e);
+                e.printStackTrace();
             }
         }
         return null;
@@ -253,7 +248,7 @@ public class GestoreEsperienze {
 
     public void ricercaConFiltri(Utente utente){
         String parolaChiave,conferma;
-        ArrayList<Esperienza> risultatiRicerca = new ArrayList<>();
+        ArrayList<Esperienza> risultatiRicerca;
         do {
             System.out.println("Inserire parola chiave da ricercare");
             parolaChiave = inputScanner.nextLine();
@@ -338,13 +333,9 @@ public class GestoreEsperienze {
                         selezione = Integer.parseInt(inputScanner.nextLine());
                     }while(selezione<1 || selezione>3);
 
-                    switch (selezione){
-                        case 1: {
-                                    cicerone.eliminaEsperienza(esperienzaScelta);
-                        }break;
-                        case 2:{
-                            modificaEsperienza(esperienzaScelta);
-                        }break;
+                    switch (selezione) {
+                        case 1 -> cicerone.eliminaEsperienza(esperienzaScelta);
+                        case 2 -> modificaEsperienza(esperienzaScelta);
                     }
                 }else{
                     System.out.println("Non sei autorizzato ad eliminare o modificare questa esperienza");
@@ -362,14 +353,8 @@ public class GestoreEsperienze {
                 }while(selezione<1 || selezione>3);
 
                 switch (selezione) {
-                    case 1: {
-                        associazione.eliminaEsperienza(esperienzaScelta);
-                    }
-                    break;
-                    case 2: {
-                        modificaEsperienza(esperienzaScelta);
-                    }
-                    break;
+                    case 1 -> associazione.eliminaEsperienza(esperienzaScelta);
+                    case 2 -> modificaEsperienza(esperienzaScelta);
                 }
             }else if(utente instanceof  Turista){
                 Turista turista = (Turista) utente;
@@ -383,14 +368,8 @@ public class GestoreEsperienze {
                 }while(selezione<1 || selezione>3);
 
                 switch (selezione) {
-                    case 1: {
-                        condividiEsperienza(esperienzaScelta);
-                    }
-                    break;
-                    case 2: {
-                        turista.prenotaEsperienza(esperienzaScelta);
-                    }
-                    break;
+                    case 1 -> condividiEsperienza(esperienzaScelta);
+                    case 2 -> turista.prenotaEsperienza(esperienzaScelta);
                 }
             }
 
@@ -447,7 +426,7 @@ public class GestoreEsperienze {
         System.out.println("6) Elimina Tag");
         System.out.println("7) Aggiungi Tappa");
         System.out.println("8) Elimina Tappa");
-        System.out.println("0) Torna al menu principali");
+        System.out.println("0) Torna al menu principale");
         int scelta = 0;
         try{
             scelta = Integer.parseInt(inputScanner.nextLine());
@@ -455,27 +434,15 @@ public class GestoreEsperienze {
             System.out.println("Nessuna scelta");
             return;
         }
-        switch (scelta){
-            case 1: {modificaTitolo(esperienzaDaModificare);
-            }break;
-            case 2:{modificaDescrizione(esperienzaDaModificare);
-            }break;
-            case 3:{modificaData(esperienzaDaModificare);
-            }break;
-            case 4:{modificaPrezzo(esperienzaDaModificare);
-            }break;
-            case 5:{//TODO MODIFICA
-                //A
-            }break;
-            case 6:{//TODO MODIFICA
-                //B
-            }break;
-            case 7:{//TODO MODIFICA
-                //C
-            }break;
-            case 8:{//TODO MODIFICAA
-
-            }break;
+        switch (scelta) {
+            case 1 -> modificaTitolo(esperienzaDaModificare);
+            case 2 -> modificaDescrizione(esperienzaDaModificare);
+            case 3 -> modificaData(esperienzaDaModificare);
+            case 4 -> modificaPrezzo(esperienzaDaModificare);
+            case 5 -> aggiungiTag(esperienzaDaModificare);
+            case 6 -> eliminaTag(esperienzaDaModificare);
+            case 7 -> aggiungiTappa(esperienzaDaModificare);
+            case 8 -> eliminaTappa(esperienzaDaModificare);
         }
     }
 
@@ -562,5 +529,123 @@ public class GestoreEsperienze {
             System.out.println("Prezzo non modificato");
         }
 
+    }
+
+    private void aggiungiTag(Esperienza esperienzaDaModificare) {
+        System.out.println("Tag disponibili: ");
+        ArrayList<Tag> elencoTag = DBManager.listaTag();//Elenco di tutti i tag presenti nel DB
+        ArrayList<Tag> tagEsperienza = DBManager.getTagEsperienza(esperienzaDaModificare);//Elenco dei tag dell'esperienza
+        //Li rimuovo dall'elenco dei tag disponibili
+        for (Tag tagExp:
+             tagEsperienza) {
+            elencoTag.removeIf(tagTot -> tagExp.getName().equals(tagTot.getName()));
+        }
+        for(int i = 1; i<=elencoTag.size(); i++){
+            System.out.println(i+") "+elencoTag.get(i-1).getName());
+        }
+        int scelta;
+
+        System.out.println("Inserire numero tag da aggiungere: ");
+        scelta = Integer.parseInt(inputScanner.nextLine());
+        String conferma;
+        do{
+            System.out.println("Confermare l'aggiunta del Tag "+elencoTag.get(scelta-1).getName()+ "?[S/N]");
+            conferma = inputScanner.nextLine();
+        }while (!(conferma.equals("S")||conferma.equals("N")));
+
+        if(conferma.equals("S")){
+            ArrayList<Tag> nuovoElencoTag = (ArrayList<Tag>) tagEsperienza.clone();
+            nuovoElencoTag.add(elencoTag.get(scelta-1));
+            esperienzaDaModificare.setTag(nuovoElencoTag);
+            DBManager.aggiungiTagEsperienza(esperienzaDaModificare, elencoTag.get(scelta-1));
+            System.out.println("Tag aggiunto");
+        }else{
+            System.out.println("Tag non aggiunto");
+        }
+
+    }
+
+    private void eliminaTag(Esperienza esperienzaDaModificare) {
+        ArrayList<Tag> tagEsperienza = DBManager.getTagEsperienza(esperienzaDaModificare);//Elenco dei tag dell'esperienza
+        System.out.println("Quale tag vuoi eliminare?");
+        for(int i = 1; i<=tagEsperienza.size(); i++){
+            System.out.println(i+") "+tagEsperienza.get(i-1).getName());
+        }
+
+        int scelta;
+
+        System.out.println("Inserire numero tag da eliminare: ");
+        scelta = Integer.parseInt(inputScanner.nextLine());
+        String conferma;
+        do{
+            System.out.println("Confermare l'eliminazione del Tag "+tagEsperienza.get(scelta-1).getName()+ "?[S/N]");
+            conferma = inputScanner.nextLine();
+        }while (!(conferma.equals("S")||conferma.equals("N")));
+
+        if(conferma.equals("S")){
+            ArrayList<Tag> nuovoElencoTag = (ArrayList<Tag>) tagEsperienza.clone();
+            nuovoElencoTag.remove(tagEsperienza.get(scelta-1));
+            Tag tagDaEliminare = tagEsperienza.get(scelta-1);
+            esperienzaDaModificare.setTag(nuovoElencoTag);
+            DBManager.eliminaTagEsperienza(esperienzaDaModificare, tagDaEliminare);
+            System.out.println("Tag eliminato");
+        }else{
+            System.out.println("Tag non eliminato");
+        }
+    }
+
+
+    private void aggiungiTappa(Esperienza esperienzaDaModificare) {
+        System.out.println("Nome tappa: ");
+        String nomeTappa = inputScanner.nextLine();
+        System.out.println("Descrizione tappa: ");
+        String descrizioneTappa = inputScanner.nextLine();
+        System.out.println("Indirizzo tappa: ");
+        String indirizoTappa = inputScanner.nextLine();
+
+        String conferma;
+        do{
+            System.out.println("Confermare inserimento? [S/N]");
+            conferma = inputScanner.nextLine();
+        }while(!(conferma.equals("S") || conferma.equals("N")));
+
+        if(conferma.equals("S")){
+            Tappa tappaDaAggiungere = new Tappa(nomeTappa, descrizioneTappa, indirizoTappa);
+            esperienzaDaModificare.aggiungiTappa(tappaDaAggiungere);
+            DBManager.aggiungiTappaEsperienza(esperienzaDaModificare, tappaDaAggiungere);
+            System.out.println("Tappa aggiunta");
+        }else{
+            System.out.println("Tappa non aggiunta");
+        }
+
+    }
+
+
+    private void eliminaTappa(Esperienza esperienzaDaModificare) {
+        ArrayList<Tappa> tappeEsperienza = DBManager.getTappeEsperienza(esperienzaDaModificare);
+        System.out.println("Quale tappa vuoi eliminare?");
+        for(int i = 1; i<=tappeEsperienza.size(); i++){
+            System.out.println(i+") "+tappeEsperienza.get(i-1).getNome());
+        }
+        int scelta;
+
+        System.out.println("Inserire numero tappa da eliminare: ");
+        scelta = Integer.parseInt(inputScanner.nextLine());
+        String conferma;
+        do{
+            System.out.println("Confermare l'eliminazione della tappa "+tappeEsperienza.get(scelta-1).getNome()+ "?[S/N]");
+            conferma = inputScanner.nextLine();
+        }while (!(conferma.equals("S")||conferma.equals("N")));
+
+        if(conferma.equals("S")){
+            ArrayList<Tappa> nuovoElencoTappe = (ArrayList<Tappa>) tappeEsperienza.clone();
+            nuovoElencoTappe.remove(tappeEsperienza.get(scelta-1));
+            Tappa tappaDaEliminare = tappeEsperienza.get(scelta-1);
+            esperienzaDaModificare.setTappe(nuovoElencoTappe);
+            DBManager.eliminaTappaEsperienza(esperienzaDaModificare, tappaDaEliminare);
+            System.out.println("Tappa eliminata");
+        }else{
+            System.out.println("Tappa non eliminata");
+        }
     }
 }

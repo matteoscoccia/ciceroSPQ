@@ -2,11 +2,9 @@ package it.unicam.cs.amministrazione;
 
 import it.unicam.cs.esperienza.Esperienza;
 import it.unicam.cs.esperienza.Tag;
-import it.unicam.cs.storage.DBManager;
 import it.unicam.cs.utente.GestoreAccount;
 import it.unicam.cs.utente.Utente;
 
-import java.sql.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -15,7 +13,7 @@ import static it.unicam.cs.main.App.*;
 
 public class Amministrazione {
 
-    private String email;
+    private final String email;
     Scanner input = new Scanner(System.in);
 
     public Amministrazione(String email) {

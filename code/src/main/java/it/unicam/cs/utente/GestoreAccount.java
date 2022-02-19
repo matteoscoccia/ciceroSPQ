@@ -16,7 +16,7 @@ public class GestoreAccount {
 
 
     public void iscrizione(){
-        //TODO implementare il corpo del metodo??
+
     }
 
     public static boolean controllaFormato(String email) {

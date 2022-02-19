@@ -27,6 +27,7 @@ public class Esperienza {
         this.titolo = titolo;
         this.descrizione = descrizione;
         this.data = data;
+        this.tappe = new ArrayList<>();
     }
 
     public int getId(){
@@ -70,7 +71,7 @@ public class Esperienza {
     }
 
     public void aggiungiTappa(Tappa tappaDaAggiungere){
-
+        tappe.add(tappaDaAggiungere);
     }
     public void aggiungiPartecipante (Partecipante partecipanteDaAggiungere){
 
@@ -97,9 +98,6 @@ public class Esperienza {
         this.guida = ciceroneDaAssociare;
         DBManager.registraGuidaEsperienza(ciceroneDaAssociare, id);
     }
-    public void associaToponimo (Toponimo toponimoDaAssociare){
-        //TODO
-    }
 
     public void setTag(ArrayList<Tag> listaTag) {
         this.tag = listaTag;
@@ -111,5 +109,9 @@ public class Esperienza {
 
     public Toponimo getToponimo() {
         return this.toponimo;
+    }
+
+    public void setTappe(ArrayList<Tappa> tappe){
+        this.tappe = tappe;
     }
 }

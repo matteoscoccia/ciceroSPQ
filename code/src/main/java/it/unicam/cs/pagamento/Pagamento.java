@@ -15,8 +15,6 @@ public class Pagamento {
         this.esperienza = esperienza;
     }
 
-    // todo add other methods to complete a payment
-
     public float getImporto(){
        return this.importo;
     }
